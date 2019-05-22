@@ -1,2 +1,2 @@
-FROM mysql:5.6
+FROM mysql:latest
 COPY init.sql /docker-entrypoint-initdb.d/init.sql

@@ -8,19 +8,19 @@ import(
 )
 
 func main() {
-  fmt.Println("Main Process")
-
   cnn, err := sql.Open("mysql", "root:root@tcp(songs-share-db:3306)/songs-share")
   if err != nil {
     log.Fatal(err)
   }
   
-  id := 1
-  var name string
+  var uuid string
+  var firstName string
+  var lastName string
+  var username string
 
-  if err := cnn.QueryRow("SELECT username FROM users WHERE id = ? LIMIT 1", id).Scan(&name); err != nil {
+  if err := cnn.QueryRow("SELECT * FROM users LIMIT 1").Scan(&uuid, &firstName, &lastName, &username); err != nil {
     log.Fatal(err)
   }
 
-  fmt.Println(id, name)
+  fmt.Println(uuid, firstName, lastName, username)
 }

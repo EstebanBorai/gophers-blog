@@ -1,5 +1,12 @@
 USE songs-share;
 
-CREATE TABLE 'users' (id int, username varchar(20));
+CREATE TABLE users (
+  id BINARY(16) PRIMARY KEY,
+  firstName varchar(255),
+  lastName varchar(255),
+  username varchar(25)
+);
 
-INSERT INTO 'users' (id, username) VALUES (1, 'SongsShare');
+INSERT INTO users(id, firstName, lastName, username)
+  VALUES(UUID_TO_BIN(UUID()), 'John', 'Doe', 'johndoe'),
+        (UUID_TO_BIN(UUID()), 'Esteban', 'Borai', 'estebanborai');
