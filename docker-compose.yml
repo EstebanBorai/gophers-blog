@@ -1,0 +1,26 @@
+version: '3'
+services:
+  database:
+    build:
+      context: ./database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: songs-share
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    container_name: songs-share-db
+    ports:
+      - "3306:3306"
+    # A tty is essentially a text input output environment aka shell.
+    tty: true
+  server:
+    build:
+      context: ./server
+    volumes:
+      - "./server:/go"
+    container_name: songs-share-server
+    ports:
+      - "8080:8080"
+    tty: true
+    depends_on:
+      - database
