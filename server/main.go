@@ -1,11 +1,9 @@
 package main
 
 import(
-  _ "github.com/go-sql-driver/mysql"
-  queries "queries"
-  "fmt"
+  s "handlers"
 )
 
 func main() {
-  queries.UserIndex()
+  s.StartServer()
 }

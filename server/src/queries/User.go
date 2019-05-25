@@ -2,6 +2,7 @@ package queries
 
 import (
   "fmt"
+  "encoding/json"
 )
 
 type User struct {
@@ -11,7 +12,7 @@ type User struct {
   UserName string
 }
 
-func UserIndex() []User {
+func UserIndex() string {
   conn := DBConn()
 
   queryResults, err := conn.Query("SELECT * FROM users LIMIT 1")
@@ -43,7 +44,22 @@ func UserIndex() []User {
 
     results = append(results, user)
   }
-  
+
   defer conn.Close()
-  return make([]User, len(results))
+  jsonEncoded, err := json.Marshal(results)
+
+  return string(jsonEncoded)
 }
+
+// func InsertUser(user User{}) string {
+//   conn := DBConn()
+
+//   queryResults, err := conn.Query(fmt.Sprintf("INSERT INTO users(firstName, lastName, username)
+//     VALUES('%s', '%s', '%s')", user.FirstName, user.LastName, user.UserName, ))
+
+//   if err != nil {
+//     panic(err.Error())
+//   }
+
+//   var result = User{}
+// }
