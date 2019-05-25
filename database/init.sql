@@ -9,4 +9,5 @@ CREATE TABLE users (
 
 INSERT INTO users(id, firstName, lastName, username)
   VALUES(UUID_TO_BIN(UUID()), 'John', 'Doe', 'johndoe'),
-        (UUID_TO_BIN(UUID()), 'Esteban', 'Borai', 'estebanborai');
+        (UUID_TO_BIN(UUID()), 'Esteban', 'Borai', 'estebanborai'),
+        (UUID_TO_BIN(UUID()), 'John', 'Snow', 'johnsnow')
