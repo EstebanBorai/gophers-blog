@@ -34,3 +34,9 @@ Thumbs.db
 ##############
 node_modules
 yarn-error.log
+
+# Go Lang #
+###########
+golang.org
+gopkg.in
+github.com

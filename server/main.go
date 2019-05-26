@@ -1,9 +1,9 @@
 package main
 
 import(
-  s "handlers"
+  h "handlers"
 )
 
 func main() {
-  s.StartServer()
+  h.StartServer()
 }

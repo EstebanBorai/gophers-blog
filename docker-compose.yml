@@ -11,8 +11,6 @@ services:
     container_name: songs-share-db
     ports:
       - "3306:3306"
-    # A tty is essentially a text input output environment aka shell.
-    tty: true
   server:
     build:
       context: ./server
