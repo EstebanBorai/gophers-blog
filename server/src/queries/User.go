@@ -3,17 +3,20 @@ package queries
 import (
   "fmt"
   "encoding/json"
+  _ "github.com/go-sql-driver/mysql"
+  uuid "github.com/google/uuid"
+  "database/sql"
 )
 
 type User struct {
-  Id string
-  FirstName string
-  LastName string
-  UserName string
+  Id string `json:"id"`
+  FirstName string `json:"firstName"`
+  LastName string `json:"lastName"`
+  UserName string `json:"userName"`
 }
 
 func UserIndex() string {
-  conn := DBConn()
+  conn, err := sql.Open("mysql", connStr)
 
   queryResults, err := conn.Query("SELECT * FROM users LIMIT 1")
 
@@ -51,15 +54,32 @@ func UserIndex() string {
   return string(jsonEncoded)
 }
 
-// func InsertUser(user User{}) string {
-//   conn := DBConn()
+func InsertUser(requestBody string) string {
+  var user User
+  json.Unmarshal([]byte(requestBody), &user)
 
-//   queryResults, err := conn.Query(fmt.Sprintf("INSERT INTO users(firstName, lastName, username)
-//     VALUES('%s', '%s', '%s')", user.FirstName, user.LastName, user.UserName, ))
+  conn, err := sql.Open("mysql", connStr)
 
-//   if err != nil {
-//     panic(err.Error())
-//   }
+  if err != nil {
+    panic(err.Error())
+  }
 
-//   var result = User{}
-// }
+  var id string = uuid.New().String()
+
+  var query string = fmt.Sprintf(`INSERT INTO users(id, firstName, lastName, username) VALUES('%s', '%s', '%s', '%s')`, 
+    id, user.FirstName, user.LastName, user.UserName)
+
+  fmt.Println(query)
+
+  queryInsert, err := conn.Prepare(query)
+
+  if err != nil {
+    panic(err.Error())
+  }
+  defer queryInsert.Close()
+
+  queryInsert.Exec()
+
+  jsonEncoded, err := json.Marshal(user)
+  return string(jsonEncoded)
+}
