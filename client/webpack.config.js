@@ -1,54 +1,65 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+/* eslint-disable */
 
-const mode = process.env.NODE_ENV || 'development';
-const prod = mode === 'production';
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HotModuleReplacementPlugin = require('webpack').HotModuleReplacementPlugin;
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-	entry: {
-		bundle: ['./src/main.js']
-	},
-	resolve: {
-		extensions: ['.mjs', '.js', '.svelte']
-	},
+	entry: './src/index.js',
 	output: {
-		path: __dirname + '/public',
-		filename: '[name].js',
-		chunkFilename: '[name].[id].js'
+		filename: 'index.js',
+		path: path.resolve(__dirname, 'bundle')
 	},
-  devServer: {
-    port: 4200
-  },
 	module: {
 		rules: [
 			{
-				test: /\.svelte$/,
+				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
 				use: {
-					loader: 'svelte-loader',
-					options: {
-						emitCss: true,
-						hotReload: true
-					}
+					loader: 'babel-loader'
 				}
 			},
 			{
 				test: /\.css$/,
 				use: [
-					/**
-					 * MiniCssExtractPlugin doesn't support HMR.
-					 * For developing, use 'style-loader' instead.
-					 * */
-					prod ? MiniCssExtractPlugin.loader : 'style-loader',
+					'style-loader',
 					'css-loader'
 				]
+			},
+			{
+				test: /\.(png|jpg|gif|svg)$/,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: 'assets/[name].[ext]',
+						}
+					}
+				]
+			},
+			{
+				test: /\.(woff|woff2|eot|ttf|otf)$/,
+				loader: 'file-loader',
+				options: {
+					name: 'assets/[name].[ext]'
+				}
 			}
 		]
 	},
-	mode,
+	devServer: {
+		contentBase: path.join(__dirname, 'src'),
+		compress: true,
+		port: 4200
+	},
 	plugins: [
-		new MiniCssExtractPlugin({
-			filename: '[name].css'
-		})
+		new HtmlWebpackPlugin({
+			template: 'public/index.html'
+		}),
+    new HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin()
 	],
-	devtool: prod ? false: 'source-map'
+	resolve: {
+		extensions: ['.js', '.jsx']
+	}
 };

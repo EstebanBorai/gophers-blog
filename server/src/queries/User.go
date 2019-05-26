@@ -18,7 +18,7 @@ type User struct {
 func UserIndex() string {
   conn, err := sql.Open("mysql", connStr)
 
-  queryResults, err := conn.Query("SELECT * FROM users LIMIT 1")
+  queryResults, err := conn.Query("SELECT * FROM users")
 
   if err != nil {
     panic(err.Error())

@@ -1,12 +1,15 @@
 package handlers
 
 import(
+  "github.com/gin-contrib/cors"
   "github.com/gin-gonic/gin"
   queries "queries"
 )
 
 func StartServer() {
   router := gin.Default()
+
+  router.Use(cors.Default())
 
   router.GET("/api/users", func (ctx *gin.Context) {
     ctx.String(200, queries.UserIndex())
