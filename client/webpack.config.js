@@ -1,9 +1,10 @@
 /* eslint-disable */
 
 const path = require('path');
+const DefinePlugin = require('webpack').DefinePlugin;
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HotModuleReplacementPlugin = require('webpack').HotModuleReplacementPlugin;
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
 	entry: './src/index.js',
@@ -57,7 +58,10 @@ module.exports = {
 			template: 'public/index.html'
 		}),
     new HotModuleReplacementPlugin(),
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new DefinePlugin({
+      API_URL: JSON.stringify('http://localhost:8080/')
+    }),
 	],
 	resolve: {
 		extensions: ['.js', '.jsx']

@@ -1,12 +1,17 @@
 import React from 'react';
-import Header from './components/Header';
+import Login from './components/Login';
 import Main from './components/Main';
 
-const App = () => (
-  <React.Fragment>
-    <Header />
-    <Main />
-  </React.Fragment>
-);
+function App() {
+  const loggedUser = () => {
+    if (localStorage.getItem('songs-share:user') !== null) {
+      return <Main />;
+    } else {
+      return <Login />;
+    }
+  }
+
+  return loggedUser();
+}
 
 export default App;

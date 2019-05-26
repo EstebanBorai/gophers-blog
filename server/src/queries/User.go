@@ -13,6 +13,12 @@ type User struct {
   FirstName string `json:"firstName"`
   LastName string `json:"lastName"`
   UserName string `json:"userName"`
+  Password string `json:"-"`
+}
+
+type UserCredentials struct {
+  UserName string
+  Password string
 }
 
 func UserIndex() string {
@@ -27,9 +33,9 @@ func UserIndex() string {
   var results = []User{}
 
   for queryResults.Next() {
-    var id, firstName, lastName, userName string
+    var id, firstName, lastName, userName, password string
 
-    err = queryResults.Scan(&id, &firstName, &lastName, &userName)
+    err = queryResults.Scan(&id, &firstName, &lastName, &userName, &password)
 
     if err != nil {
       panic(err.Error())
@@ -40,6 +46,7 @@ func UserIndex() string {
       FirstName: firstName,
       LastName: lastName,
       UserName: userName,
+      Password: password,
     }
 
     fmt.Println(fmt.Sprintf("Found: %s // %s // %s // %s @ songs-share.users\n",
@@ -81,5 +88,47 @@ func InsertUser(requestBody string) string {
   queryInsert.Exec()
 
   jsonEncoded, err := json.Marshal(user)
+  return string(jsonEncoded)
+}
+
+func Login(requestBody string) string {
+  // Enhance this
+  var userCreds UserCredentials
+  var user User
+
+  json.Unmarshal([]byte(requestBody), &userCreds)
+
+  conn, err := sql.Open("mysql", connStr)
+
+  if err != nil {
+    panic(err.Error())
+  }
+
+  var query string = fmt.Sprintf("SELECT * FROM users WHERE userName='%s' AND password='%s'", 
+    userCreds.UserName, userCreds.Password)
+
+  queryResults, err := conn.Query(query)
+
+  for queryResults.Next() {
+    var id, firstName, lastName, userName, password string
+
+    err = queryResults.Scan(&id, &firstName, &lastName, &userName, &password)
+
+    if err != nil {
+      panic(err.Error())
+    }
+
+    user = User{
+      Id: id,
+      FirstName: firstName,
+      LastName: lastName,
+      UserName: userName,
+      Password: password,
+    }
+  }
+
+  defer conn.Close()
+  jsonEncoded, err := json.Marshal(user)
+
   return string(jsonEncoded)
 }
