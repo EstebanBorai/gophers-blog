@@ -1,6 +1,7 @@
 import React from 'react';
 import Login from './components/Login';
 import Main from './components/Main';
+import SignUp from './components/SignUp';
 
 function App() {
   const loggedUser = () => {
@@ -11,7 +12,7 @@ function App() {
     }
   }
 
-  return loggedUser();
+  return <SignUp />;
 }
 
 export default App;
