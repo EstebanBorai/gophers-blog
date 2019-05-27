@@ -1,0 +1,29 @@
+.sign-up {
+  background-image: url('https://media3.giphy.com/media/konJj26N1IICc/giphy.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  form {
+    width: 80%;
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: .25rem;
+
+    &.active {
+      transition: .5s;
+      background: rgba(10, 10, 10, .5);
+    }
+
+    h3 {
+      color: #ffffff;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+  }
+}

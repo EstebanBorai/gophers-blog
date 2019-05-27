@@ -65,6 +65,10 @@ func InsertUser(requestBody string) string {
   var user User
   json.Unmarshal([]byte(requestBody), &user)
 
+  if IsUserNameTaken(user.UserName) == true {
+    return fmt.Sprintf("%s is already taken!", user.UserName)
+  }
+
   conn, err := sql.Open("mysql", connStr)
 
   if err != nil {
@@ -72,11 +76,14 @@ func InsertUser(requestBody string) string {
   }
 
   var id string = uuid.New().String()
+  var pwdHash string = HashAndSalt(user.Password)
 
-  var query string = fmt.Sprintf(`INSERT INTO users(id, firstName, lastName, username) VALUES('%s', '%s', '%s', '%s')`, 
-    id, user.FirstName, user.LastName, user.UserName)
+  var query string = fmt.Sprintf(`INSERT INTO users(id, firstName, lastName, username, password) VALUES('%s', '%s', '%s', '%s', '%s')`, 
+    id, user.FirstName, user.LastName, user.UserName, pwdHash)
 
   fmt.Println(query)
+
+  user.Id = id
 
   queryInsert, err := conn.Prepare(query)
 
@@ -91,10 +98,34 @@ func InsertUser(requestBody string) string {
   return string(jsonEncoded)
 }
 
+func IsUserNameTaken(username string) bool {
+  conn, err := sql.Open("mysql", connStr)
+  var exists int
+
+  if err != nil {
+    panic(err.Error())
+  }
+
+  var query string = fmt.Sprintf("SELECT COUNT(*) FROM users WHERE username='%s' LIMIT 1",
+    username)
+
+  queryResults, err := conn.Query(query)
+
+  for queryResults.Next() {
+    err = queryResults.Scan(&exists)
+  }
+
+  if exists != 0 {
+    return true
+  }
+
+  return false
+}
+
 func Login(requestBody string) string {
   // Enhance this
   var userCreds UserCredentials
-  var user User
+  var passwordHash string
 
   json.Unmarshal([]byte(requestBody), &userCreds)
 
@@ -104,31 +135,34 @@ func Login(requestBody string) string {
     panic(err.Error())
   }
 
-  var query string = fmt.Sprintf("SELECT * FROM users WHERE userName='%s' AND password='%s'", 
-    userCreds.UserName, userCreds.Password)
+  var query string = fmt.Sprintf("SELECT password FROM users WHERE username='%s' LIMIT 1", 
+    userCreds.UserName)
 
   queryResults, err := conn.Query(query)
 
   for queryResults.Next() {
-    var id, firstName, lastName, userName, password string
-
-    err = queryResults.Scan(&id, &firstName, &lastName, &userName, &password)
+    err = queryResults.Scan(&passwordHash)
 
     if err != nil {
       panic(err.Error())
     }
 
-    user = User{
-      Id: id,
-      FirstName: firstName,
-      LastName: lastName,
-      UserName: userName,
-      Password: password,
-    }
+    fmt.Println(passwordHash)
+    fmt.Println(HashAndSalt(userCreds.Password))
+    fmt.Println(userCreds.Password)
   }
 
   defer conn.Close()
-  jsonEncoded, err := json.Marshal(user)
 
-  return string(jsonEncoded)
+  if CheckPassword(passwordHash, userCreds.Password) == true {
+    jsonEncoded, err := json.Marshal(true)
+
+    if err != nil {
+      panic(err.Error())
+    }
+  
+    return string(jsonEncoded)
+  } else {
+    return string("Bad Request")
+  }
 }
