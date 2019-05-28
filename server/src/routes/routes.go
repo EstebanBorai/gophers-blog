@@ -3,7 +3,7 @@ package routes
 import(
   "github.com/gin-contrib/cors"
   "github.com/gin-gonic/gin"
-  queries "queries"
+  controllers "controllers"
 )
 
 func StartServer() {
@@ -11,28 +11,8 @@ func StartServer() {
 
   router.Use(cors.Default())
 
-  router.GET("/api/users", func (ctx *gin.Context) {
-    ctx.String(200, queries.UserIndex())
-  })
-
-  router.POST("/api/users", func (ctx *gin.Context) {
-    buf := make([]byte, 1024)
-    num, _ := ctx.Request.Body.Read(buf)
-    reqBody := string(buf[0:num])
-
-    result := queries.InsertUser(reqBody)
-
-    ctx.JSON(200, result)
-  })
-
-  router.POST("/api/users/login", func (ctx *gin.Context) {
-    buf := make([]byte, 1024)
-    num, _ := ctx.Request.Body.Read(buf)
-    reqBody := string(buf[0:num])
-
-    result := queries.Login(reqBody)
-
-    ctx.JSON(200, result)
+  router.POST("/v1/users", func (ctx *gin.Context) {
+    ctx.String(200, controllers.CreateUser())
   })
 
   router.Run(":8080")
