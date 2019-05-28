@@ -1,14 +1,20 @@
 package controllers
 
 import (
-  database "database"
   uuid "github.com/google/uuid"
-  database "database"
   "models"
+  "github.com/jinzhu/gorm"
+  _ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func CreateUser() string {
-  db := database.Connect()
+  db, err := gorm.Open("mysql", "admin:admin@/songs-share?charset=utf8mb4&parseTime=True&loc=Local")
+
+  if err != nil {
+    return nil, err
+  }
+
+  defer db.Close()
 
   var id string = uuid.New().String()
 
