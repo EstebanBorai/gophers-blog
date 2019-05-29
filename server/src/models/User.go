@@ -11,4 +11,5 @@ type User struct {
   LastName string `gorm:"type:varchar(100);" json:"lastName"`
   Birthday time.Time `gorm:"not null" json:"birthday"`
   DateJoined time.Time `gorm:"not null" json:"dateJoined"`
+  UserSecret UserSecret `gorm:"foreignkey:UserId" json:"-"`
 }

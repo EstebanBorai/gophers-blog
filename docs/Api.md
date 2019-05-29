@@ -9,22 +9,23 @@ HTTP Method | Request URI
 ### Request Body
 ```json
   {
-	  "userName": string,
-	  "firstName": string,
-	  "lastName": string,
-	  "birthday": Date,
-	  "dateJoined": Date
+	  "userName": "string",
+    "password": "string",
+	  "firstName": "string",
+	  "lastName": "string",
+	  "birthday": "Date",
+	  "dateJoined": "Date"
   }
 ```
 
 ### Response Body
 ```json 
   {
-    "id": string,
-	  "userName": string,
-	  "firstName": string,
-	  "lastName": string,
-	  "birthday": Date,
-	  "dateJoined": Date
+    "id": "string",
+	  "userName": "string",
+	  "firstName": "string",
+	  "lastName": "string",
+	  "birthday": "Date",
+	  "dateJoined": "Date"
   }
 ```
