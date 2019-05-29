@@ -11,7 +11,7 @@ func StartServer() {
 
   router.Use(cors.Default())
 
-  router.POST("/v1/users", func (ctx *gin.Context) {
+  router.POST("/api/v1/users", func (ctx *gin.Context) {
     ctx.String(200, controllers.CreateUser())
   })
 

@@ -1,11 +1,10 @@
 package models
 
 import (
-  "github.com/jinzhu/gorm"
+  "time"
 )
 
 type User struct {
-  gorm.Model
   Id string `gorm:"not null" json:"id"`
   UserName string `gorm:"type:varchar(100);unique_index" json:"userName"`
   FirstName string `gorm:"type:varchar(100);" json:"firstName"`
