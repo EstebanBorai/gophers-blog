@@ -1,7 +1,6 @@
 package security
 
 import (
-  "fmt"
   "golang.org/x/crypto/bcrypt"
 )
 

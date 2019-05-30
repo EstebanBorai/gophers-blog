@@ -29,7 +29,7 @@ func LogIn(credentials string) security.JWTCookie {
 
   if security.ValidatePassword(userSecret.Hash, creds.Password) {
     return security.CreateToken(creds.UserName)
+  } else {
+    panic("Password is not correct")
   }
-
-  return nil
 }
