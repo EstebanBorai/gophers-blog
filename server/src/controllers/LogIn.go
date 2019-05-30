@@ -1,19 +1,35 @@
 package controllers
 
 import (
-  "fmt"
-  security "security"
   models "models"
   "encoding/json"
+  security "security"
+  "github.com/jinzhu/gorm"
 )
 
 func LogIn(credentials string) security.JWTCookie {
+  var user models.User
   var creds models.UserCredentials
+  var userSecret models.UserSecret
 
-  json.Unmarshal([]byte(credentials), &creds)
+  if err := json.Unmarshal([]byte(credentials), &creds); err != nil {
+    panic(err.Error())
+  }
 
-  // Check for Password
-  fmt.Println(fmt.Sprintf("Username: %s, Password: %s", creds.UserName, creds.Password))
-  
-  return security.CreateToken(creds.UserName)
+  db, err := gorm.Open("mysql", "root:root@tcp(songs-share-db)/songs-share?charset=utf8mb4&parseTime=True&loc=Local")
+
+  if err != nil {
+    panic(err.Error())
+  }
+
+  defer db.Close()
+
+  db.Where(models.User{UserName: creds.UserName}).First(&user)
+  db.Where(models.UserSecret{UserId: user.Id}).First(&userSecret)
+
+  if security.ValidatePassword(userSecret.Hash, creds.Password) {
+    return security.CreateToken(creds.UserName)
+  }
+
+  return nil
 }

@@ -3,13 +3,11 @@ package controllers
 import (
   uuid "github.com/google/uuid"
   models "models"
-  "golang.org/x/crypto/bcrypt"
+  security "security"
   "github.com/jinzhu/gorm"
 )
 
 func CreatePassword(password string, userId string) (response bool, err error) {
-  pwd := []byte(password)
-
   db, err := gorm.Open("mysql", "root:root@tcp(songs-share-db)/songs-share?charset=utf8mb4&parseTime=True&loc=Local")
 
   if err != nil {
@@ -20,8 +18,6 @@ func CreatePassword(password string, userId string) (response bool, err error) {
 
   defer db.Close()
 
-  hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
-
   if err != nil {
     panic(err.Error())
   }
@@ -30,7 +26,7 @@ func CreatePassword(password string, userId string) (response bool, err error) {
   userSecret := models.UserSecret {
     Id: id,
     UserId: userId,
-    Hash: string(hash),
+    Hash: security.EncryptPassword(password),
   }
 
   db.NewRecord(userSecret)
