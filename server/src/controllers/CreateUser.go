@@ -1,7 +1,10 @@
 package controllers
 
+// FIXME: Enhance Error Handlers to stop function instead of using return 
+
 import (
   "time"
+  "strings"
   "encoding/json"
   models "models"
   helpers "helpers"
@@ -40,6 +43,7 @@ func CreateUser(c *gin.Context) {
 
   if err != nil {
     eh.ResponseWithError(c, 500, "Unable to connect to the database")
+    return
   } else {
     // TODO: Automigrate on Init
     db.AutoMigrate(&models.User{})
@@ -49,12 +53,26 @@ func CreateUser(c *gin.Context) {
   
   db.NewRecord(user)
   db.Create(&user)
+
+  if dbc := db.Create(&user); dbc.Error != nil {
+    errorString := dbc.Error.Error()
+    var isUserNameTaken bool = strings.Contains(errorString, "Error 1062")
+
+    if isUserNameTaken == true {
+      eh.ResponseWithError(c, 400, "Username " + user.UserName + " is already taken.")
+      return
+    } else {
+      eh.ResponseWithError(c, 400, errorString)
+      return
+    }
+  }
   
   _, passwordError := CreatePassword(decodedPayload.Password, user.Id)
 
   if passwordError != nil {
     eh.ResponseWithError(c, 400, "Invalid Password")
+    return
+  } else {
+    c.JSON(200, user)
   }
-
-  c.JSON(200, user)
 }
