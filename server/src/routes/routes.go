@@ -1,9 +1,9 @@
 package routes
 
-import(
-  "github.com/gin-contrib/cors"
-  "github.com/gin-gonic/gin"
+import (
   controllers "controllers"
+  "github.com/gin-gonic/gin"
+  "github.com/gin-contrib/cors"
 )
 
 func StartServer() {
@@ -26,21 +26,23 @@ func StartServer() {
   })
 
   router.POST("/login", func (c *gin.Context) {
-    buf := make([]byte, 1024)
-    num, _ := c.Request.Body.Read(buf)
-    reqBody := string(buf[0:num])
+    // buf := make([]byte, 1024)
+    // num, _ := c.Request.Body.Read(buf)
+    // reqBody := string(buf[0:num])
 
-    cookie := controllers.LogIn(reqBody)
+    // cookie := controllers.LogIn(reqBody)
 
-    c.SetCookie(
-      cookie.Name,
-      cookie.Value,
-      3600,
-      "/",
-      "localhost",
-      false,
-      true,
-    )
+    // c.SetCookie(
+    //   cookie.Name,
+    //   cookie.Value,
+    //   3600,
+    //   "/",
+    //   "localhost",
+    //   false,
+    //   true,
+    // )
+    // controllers.LogIn(c)
+    controllers.LogIn(c)
   })
 
   router.Run(":8080")

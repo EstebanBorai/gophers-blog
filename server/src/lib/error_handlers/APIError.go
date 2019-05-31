@@ -1,7 +1,6 @@
-package error_handler
+package error_handlers
 
 import (
-  "net/http"
   "github.com/gin-gonic/gin"
 )
 
@@ -10,9 +9,9 @@ type APIError struct {
   Message string
 }
 
-func APIError(status int, message string) *APIError {
-  return &APIError {
+func ResponseWithError(c *gin.Context, status int, message string) {
+  c.AbortWithStatusJSON(status, APIError {
     Status: status,
     Message: message,
-  }
+  })
 }

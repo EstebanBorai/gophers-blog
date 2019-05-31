@@ -3,23 +3,28 @@ package controllers
 import (
   models "models"
   "encoding/json"
+  helpers "helpers"
   security "security"
+  eh "lib/error_handlers"
   "github.com/jinzhu/gorm"
+  "github.com/gin-gonic/gin"
 )
 
-func LogIn(credentials string) security.JWTCookie {
+func LogIn(c *gin.Context) {
   var user models.User
   var creds models.UserCredentials
   var userSecret models.UserSecret
+  var credentials string = helpers.ContextRequestBody(c)
 
   if err := json.Unmarshal([]byte(credentials), &creds); err != nil {
-    panic(err.Error())
+    var msg string = "Invalid JSON " + err.Error()
+    eh.ResponseWithError(c, 400, msg)
   }
 
   db, err := gorm.Open("mysql", "root:root@tcp(songs-share-db)/songs-share?charset=utf8mb4&parseTime=True&loc=Local")
 
   if err != nil {
-    panic(err.Error())
+    eh.ResponseWithError(c, 500, "Unable to connect to the database")
   }
 
   defer db.Close()
@@ -28,8 +33,17 @@ func LogIn(credentials string) security.JWTCookie {
   db.Where(models.UserSecret{UserId: user.Id}).First(&userSecret)
 
   if security.ValidatePassword(userSecret.Hash, creds.Password) {
-    return security.CreateToken(creds.UserName)
+    cookie := security.CreateToken(creds.UserName)
+    c.SetCookie(
+      cookie.Name,
+      cookie.Value,
+      3600,
+      "/",
+      "localhost",
+      false,
+      true,
+    )
   } else {
-    panic("Password is not correct")
+    eh.ResponseWithError(c, 403, "Invalid Username/Password")
   }
 }
