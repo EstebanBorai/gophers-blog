@@ -1,10 +1,10 @@
 package controllers
 
 import (
-  uuid "github.com/google/uuid"
-  models "models"
-  security "security"
   "github.com/jinzhu/gorm"
+  uuid "github.com/google/uuid"
+  models "github.com/estebanborai/songs-share-server/models"
+  security "github.com/estebanborai/songs-share-server/security"
 )
 
 func CreatePassword(password string, userId string) (response bool, err error) {

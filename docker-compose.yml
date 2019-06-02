@@ -17,7 +17,7 @@ services:
     build:
       context: ./server
     volumes:
-      - "./server:/go"
+      - "./server/src/:/go/src/github.com/estebanborai/songs-share-server/"
     container_name: songs-share-server
     ports:
       - "8080:8080"

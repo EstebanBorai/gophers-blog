@@ -1,6 +1,12 @@
-FROM golang:latest
+FROM golang:1.12
 
-COPY . .
+COPY ./src/ $GOPATH/src/github.com/estebanborai/songs-share-server/
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+WORKDIR $GOPATH/src/github.com/estebanborai/songs-share-server/
+
+
+RUN go get -u -v github.com/golang/dep/...
+# RUN cd $GOPATH/src/github.com/estebanborai/songs-share-server/ && dep init
+RUN dep ensure
+
+EXPOSE 8080

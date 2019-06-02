@@ -6,13 +6,13 @@ import (
   "time"
   "strings"
   "encoding/json"
-  models "models"
-  helpers "helpers"
-  eh "lib/error_handlers"
   "github.com/jinzhu/gorm"
   "github.com/gin-gonic/gin"
   uuid "github.com/google/uuid"
   _ "github.com/jinzhu/gorm/dialects/mysql"
+  models "github.com/estebanborai/songs-share-server/models"
+  helpers "github.com/estebanborai/songs-share-server/helpers"
+  eh "github.com/estebanborai/songs-share-server/lib/error_handlers"
 )
 
 type Payload struct {

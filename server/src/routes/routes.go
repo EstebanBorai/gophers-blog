@@ -1,9 +1,9 @@
 package routes
 
 import (
-  controllers "controllers"
   "github.com/gin-gonic/gin"
   "github.com/gin-contrib/cors"
+  controllers "github.com/estebanborai/songs-share-server/controllers"
 )
 
 func StartServer() {

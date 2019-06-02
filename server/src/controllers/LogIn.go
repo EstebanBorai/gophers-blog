@@ -1,11 +1,11 @@
 package controllers
 
 import (
-  models "models"
+  models "github.com/estebanborai/songs-share-server/models"
   "encoding/json"
-  helpers "helpers"
-  security "security"
-  eh "lib/error_handlers"
+  helpers "github.com/estebanborai/songs-share-server/helpers"
+  security "github.com/estebanborai/songs-share-server/security"
+  eh "github.com/estebanborai/songs-share-server/lib/error_handlers"
   "github.com/jinzhu/gorm"
   "github.com/gin-gonic/gin"
 )
