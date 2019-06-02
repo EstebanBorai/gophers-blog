@@ -1,4 +1,4 @@
-# songs-share
+# songs-share-server
 🎵 Share your favorite songs with the world
 
 ### Getting Started
