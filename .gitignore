@@ -49,3 +49,6 @@ public/bundle.*
 package-lock.json
 yarn.lock
 pkg
+server/src/vendor
+server/pkg/
+bin
