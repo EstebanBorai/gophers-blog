@@ -52,7 +52,6 @@ func CreateUser(c *gin.Context) {
   defer db.Close()
   
   db.NewRecord(user)
-  db.Create(&user)
 
   if dbc := db.Create(&user); dbc.Error != nil {
     errorString := dbc.Error.Error()
