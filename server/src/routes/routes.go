@@ -1,23 +1,42 @@
 package routes
 
 import (
+  "fmt"
   "github.com/gin-gonic/gin"
   "github.com/gin-contrib/cors"
+  "github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
   controllers "github.com/estebanborai/songs-share-server/controllers"
 )
 
 func StartServer() {
-  router := gin.Default()
+  r := gin.Default()
+  store := cookie.NewStore([]byte("songs-share-store"))
+  
+  r.Use(cors.Default())
+  r.Use(sessions.Sessions("sessions", store))
 
-  router.Use(cors.Default())
-
-  router.POST("/api/v1/users", func (c *gin.Context) {
+  r.POST("/api/v1/users", func (c *gin.Context) {
     controllers.CreateUser(c)
   })
 
-  router.POST("/login", func (c *gin.Context) {
+  r.POST("/login", func (c *gin.Context) {
+    session := sessions.Default(c)
+    var count int
+
+    v := session.Get("count")
+		if v == nil {
+			count = 0
+		} else {
+			count = v.(int)
+			count++
+    }
+
+		session.Set("count", count)
+    session.Save()
+
     controllers.LogIn(c)
   })
 
-  router.Run(":8080")
+  r.Run(":8080")
 }

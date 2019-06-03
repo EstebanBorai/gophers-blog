@@ -17,10 +17,15 @@ Now you are able to SSH into the Docker Container for the server and the databas
 
 ### Running Server
 In order to run the server, SSH into `songs-share-server` container.
-Make sure you are in the following path:
+- Make sure you are in the following path:
+
 `root@<your container id>:/go/src/github.com/estebanborai/songs-share-server#`
 
-Then run `go run main.go` command and expect the following output:
+- Install dependencies using `dep`:
+`dep ensure`
+
+- Then run `go run main.go` command and expect the following output:
+
 `[GIN-debug] Listening and serving HTTP on :8080`
 
 You are able to make HTTP requests to this server using Postman or any other tool.
