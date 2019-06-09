@@ -2,17 +2,21 @@ package routes
 
 import (
   "github.com/gin-gonic/gin"
+  "github.com/appleboy/gin-jwt"
   controllers "github.com/estebanborai/songs-share-server/controllers"
 )
 
-func UsersRoute(r *gin.Engine) {
+func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
   users := r.Group("api/v1/users")
 
-  users.GET("/", func (c *gin.Context) {
-    controllers.ReadUsers(c)
-  })
-
-  users.POST("/", func (c *gin.Context) {
-    controllers.CreateUser(c)
-  })
+  users.Use(authMiddleware.MiddlewareFunc())
+  {
+    users.GET("/", func (c *gin.Context) {
+      controllers.ReadUsers(c)
+    })
+  
+    users.POST("/", func (c *gin.Context) {
+      controllers.CreateUser(c)
+    })
+  }
 }

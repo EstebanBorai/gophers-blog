@@ -12,6 +12,7 @@ import (
 func StartServer() {
   r := gin.Default()
   store := cookie.NewStore([]byte("songs-share-store"))
+  authMiddleware := middleware.AuthMiddleware()
   
   r.Use(cors.Default())
   r.Use(gin.Logger())
@@ -44,9 +45,9 @@ func StartServer() {
   //   controllers.LogIn(c)
   // })
 
-  v1.UsersRoute(r)
+  v1.UsersRoute(r, authMiddleware)
 
-  r.POST("/login", middleware.AuthMiddleware().LoginHandler)
+  r.POST("/login", authMiddleware.LoginHandler)
 
   r.Run(":8080")
 }
