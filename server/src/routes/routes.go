@@ -5,8 +5,8 @@ import (
   "github.com/gin-contrib/cors"
   "github.com/gin-contrib/sessions"
   "github.com/gin-contrib/sessions/cookie"
+  v1 "github.com/estebanborai/songs-share-server/routes/api/v1"
   middleware "github.com/estebanborai/songs-share-server/middleware"
-  controllers "github.com/estebanborai/songs-share-server/controllers"
 )
 
 func StartServer() {
@@ -18,13 +18,13 @@ func StartServer() {
   r.Use(gin.Recovery())
   r.Use(sessions.Sessions("sessions", store))
 
-  r.GET("/api/v1/users", func (c *gin.Context) {
-    controllers.ReadUsers(c)
-  })
+  // r.GET("/api/v1/users", func (c *gin.Context) {
+  //   controllers.ReadUsers(c)
+  // })
 
-  r.POST("/api/v1/users", func (c *gin.Context) {
-    controllers.CreateUser(c)
-  })
+  // r.POST("/api/v1/users", func (c *gin.Context) {
+  //   controllers.CreateUser(c)
+  // })
 
   // r.POST("/login", func (c *gin.Context) {
   //   session := sessions.Default(c)
@@ -43,6 +43,8 @@ func StartServer() {
 
   //   controllers.LogIn(c)
   // })
+
+  v1.UsersRoute(r)
 
   r.POST("/login", middleware.AuthMiddleware().LoginHandler)
 
