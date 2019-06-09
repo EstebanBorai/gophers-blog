@@ -15,6 +15,10 @@ func StartServer() {
   r.Use(cors.Default())
   r.Use(sessions.Sessions("sessions", store))
 
+  r.GET("/api/v1/users", func (c *gin.Context) {
+    controllers.ReadUsers(c)
+  })
+
   r.POST("/api/v1/users", func (c *gin.Context) {
     controllers.CreateUser(c)
   })
