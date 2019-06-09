@@ -9,6 +9,7 @@ type User struct {
   UserName string `gorm:"type:varchar(100);unique_index" json:"userName"`
   FirstName string `gorm:"type:varchar(100);" json:"firstName"`
   LastName string `gorm:"type:varchar(100);" json:"lastName"`
+  Email string `gorm:"type:varchar(190); not null" json:"email"`
   Birthday time.Time `gorm:"not null" json:"birthday"`
   DateJoined time.Time `gorm:"not null" json:"dateJoined"`
   UserSecret UserSecret `gorm:"foreignkey:UserId" json:"-"`

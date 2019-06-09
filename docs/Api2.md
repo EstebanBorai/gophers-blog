@@ -37,6 +37,7 @@ Request Payload
   "password": "string",
   "firstName": "string",
   "lastName": "string",
+  "email": "string",
   "birthday": "Date",
   "dateJoined": "Date"
 }

@@ -1,7 +1,5 @@
 package controllers
 
-// FIXME: Enhance Error Handlers to stop function instead of using return 
-
 import (
   "time"
   "strings"
@@ -35,6 +33,7 @@ func CreateUser(c *gin.Context) {
     UserName: decodedPayload.UserName,
     FirstName: decodedPayload.FirstName,
     LastName: decodedPayload.LastName,
+    Email: decodedPayload.Email,
     Birthday: decodedPayload.Birthday,
     DateJoined: time.Now(),
   }

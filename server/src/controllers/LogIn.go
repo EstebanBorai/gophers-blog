@@ -33,7 +33,7 @@ func LogIn(c *gin.Context) {
   db.Where(models.UserSecret{UserId: user.Id}).First(&userSecret)
 
   if security.ValidatePassword(userSecret.Hash, creds.Password) {
-    cookie := security.CreateToken(creds.UserName)
+    cookie := security.CreateToken(creds.UserName, user.Email, user.Id)
     c.SetCookie(
       cookie.Name,
       cookie.Value,

@@ -8,6 +8,8 @@ import (
 var JwtSecret = []byte("songs-share-not-safe-key")
 
 type Claims struct {
+  Id string `json:"id"`
+  Email string `json:"email"`
   UserName string `json:"userName"`
   jwt.StandardClaims
 }
