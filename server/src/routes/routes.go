@@ -7,6 +7,7 @@ import (
   "github.com/gin-contrib/sessions/cookie"
   v1 "github.com/estebanborai/songs-share-server/routes/api/v1"
   middleware "github.com/estebanborai/songs-share-server/middleware"
+  controllers "github.com/estebanborai/songs-share-server/controllers"
 )
 
 func StartServer() {
@@ -48,6 +49,10 @@ func StartServer() {
   v1.UsersRoute(r, authMiddleware)
 
   r.POST("/login", authMiddleware.LoginHandler)
+
+  r.POST("/signup", func (c *gin.Context) {
+    controllers.CreateUser(c)
+  })
 
   r.Run(":8080")
 }

@@ -14,9 +14,5 @@ func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
     users.GET("/", func (c *gin.Context) {
       controllers.ReadUsers(c)
     })
-  
-    users.POST("/", func (c *gin.Context) {
-      controllers.CreateUser(c)
-    })
   }
 }

@@ -4,7 +4,8 @@ import (
   "fmt"
   "time"
 	"github.com/gin-gonic/gin"
-	"github.com/appleboy/gin-jwt"
+  "github.com/appleboy/gin-jwt"
+  security "github.com/estebanborai/songs-share-server/security"
   models "github.com/estebanborai/songs-share-server/models"
 )
 
@@ -42,26 +43,28 @@ func AuthMiddleware() (*jwt.GinJWTMiddleware) {
       if err := c.ShouldBind(&credentials); err != nil {
         return "", jwt.ErrMissingLoginValues
       }
-      userID := credentials.UserName
+      userName := credentials.UserName
       password := credentials.Password
-      // TODO: Validate with Database
-      if (userID == "admin" && password == "admin") || (userID == "test" && password == "test") {
+      user, err := security.ValidateUser(c, userName, password)
+
+      if err == nil {
         return &models.User{
-          UserName:  userID,
-          LastName:  "Borai",
-          FirstName: "Esteban",
-          Email: "eborai@mail.com",
+          Id: user.Id,
+          UserName: user.UserName,
+          Email: user.Email,
         }, nil
       }
-  
+
       return nil, jwt.ErrFailedAuthentication
     },
     Authorizator: func(data interface{}, c *gin.Context) bool {
-      if v, ok := data.(*models.User); ok && v.UserName == "admin" {
-        return true
-      }
+      // Theres no roles in this application
+      // if v, ok := data.(*models.User); ok && v.UserName == "admin" {
+      //   return true
+      // }
   
-      return false
+      // return false
+      return true
     },
     Unauthorized: func(c *gin.Context, code int, message string) {
       // TODO: Use eh instead 
