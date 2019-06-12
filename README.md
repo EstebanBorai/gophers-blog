@@ -29,3 +29,6 @@ In order to run the server, SSH into `songs-share-server` container.
 `[GIN-debug] Listening and serving HTTP on :8080`
 
 You are able to make HTTP requests to this server using Postman or any other tool.
+
+### References
+[API Documentation](https://github.com/estebanborai/songs-share-server/blob/master/docs/Api.md)

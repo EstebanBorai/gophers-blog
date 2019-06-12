@@ -1,45 +1,81 @@
-# Users API
+# Api
 
-## Authenticate
-> Creates a JWT with the current user claims and serve it as Response Cookie
-HTTP Method | Request URI
-**POST** | `/login`
+### Authenticate
+Sign up and Log in
 
-### Request Body
+Method | URL | Authentication
+------------ | ------------- | ------------
+POST | `/login` | None
+POST | `/signup` | None
+
+#### Login
+Validates username and password and returns a new JWT
+
+Request Body
 ```json
 {
-	"userName": "string",
-	"password": "string"
+  "userName": "string",
+  "password": "string"
 }
 ```
 
-## Create User
-> Creates a new user
+Response Body
+```json
+{
+  "code": "number",
+  "expire": "Date",
+  "token": "string"
+}
+```
 
-HTTP Method | Request URI
---- | --- 
-**POST** | `/api/v1/users`
+#### Sign Up
+Registers a new user
 
-### Request Body
+Request Body
 ```json
 {
   "userName": "string",
   "password": "string",
   "firstName": "string",
   "lastName": "string",
-  "birthday": "Date",
-  "dateJoined": "Date"
+  "email": "string",
+  "birthday": "Date"
 }
 ```
 
-### Response Body
-```json 
+Response Body
+```json
 {
   "id": "string",
   "userName": "string",
   "firstName": "string",
   "lastName": "string",
+  "email": "string",
   "birthday": "Date",
   "dateJoined": "Date"
+}
+```
+
+### Users
+Manage platform users
+
+Method | URL | Authentication
+------------ | ------------- | ------------
+GET | `/v1/users` | Bearer Token (JWT)
+GET | `/v1/users/:id` | Bearer Token (JWT)
+PUT | `/v1/users/:id` | Bearer Token (JWT)
+DELETE | `/v1/users/:id` | Bearer Token (JWT)
+
+#### Create an User
+
+Request Body
+```json
+{
+  "userName": "string",
+  "password": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "email": "string",
+  "birthday": "Date"
 }
 ```
