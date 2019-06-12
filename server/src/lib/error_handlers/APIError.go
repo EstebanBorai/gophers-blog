@@ -15,3 +15,12 @@ func ResponseWithError(c *gin.Context, status int, message string) {
     Message: message,
   })
 }
+
+func Unauthorized(c *gin.Context, message string) {
+  var statusCode int = 401
+
+  c.AbortWithStatusJSON(statusCode, APIError {
+    Status: statusCode,
+    Message: message,
+  })
+}
