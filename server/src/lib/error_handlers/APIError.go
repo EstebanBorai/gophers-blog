@@ -16,8 +16,35 @@ func ResponseWithError(c *gin.Context, status int, message string) {
   })
 }
 
+func BadRequest(c *gin.Context, message string) {
+  var statusCode int = 400
+
+  c.AbortWithStatusJSON(statusCode, APIError {
+    Status: statusCode,
+    Message: message,
+  })
+}
+
 func Unauthorized(c *gin.Context, message string) {
   var statusCode int = 401
+
+  c.AbortWithStatusJSON(statusCode, APIError {
+    Status: statusCode,
+    Message: message,
+  })
+}
+
+func NotFound(c *gin.Context, message string) {
+  var statusCode int = 404
+
+  c.AbortWithStatusJSON(statusCode, APIError {
+    Status: statusCode,
+    Message: message,
+  })
+}
+
+func InternalServerError(c *gin.Context, message string) {
+  var statusCode int = 500
 
   c.AbortWithStatusJSON(statusCode, APIError {
     Status: statusCode,
