@@ -62,7 +62,8 @@ Manage platform users
 Method | URL | Authentication
 ------------ | ------------- | ------------
 GET | `/v1/users` | Bearer Token (JWT)
-GET | `/v1/users/:id` | Bearer Token (JWT)
+GET | `/v1/users/id/:id` | Bearer Token (JWT)
+GET | `/v1/users/username/:username` | Bearer Token (JWT)
 PUT | `/v1/users/:id` | Bearer Token (JWT)
 DELETE | `/v1/users/:id` | Bearer Token (JWT)
 
