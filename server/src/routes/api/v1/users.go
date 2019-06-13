@@ -16,10 +16,16 @@ func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
       controllers.ReadUsers(c)
     })
 
-    users.GET("/:id", func (c *gin.Context) {
+    users.GET("/id/:id", func (c *gin.Context) {
       id := c.Param("id")
 
       controllers.FindUserById(c, id)
+    })
+
+    users.GET("/username/:username", func (c *gin.Context) {
+      userName := c.Param("username")
+
+      controllers.FindUserByUserName(c, userName)
     })
   }
 }
