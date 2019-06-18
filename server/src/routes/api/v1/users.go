@@ -27,5 +27,9 @@ func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
 
       controllers.FindUserByUserName(c, userName)
     })
+
+    users.PATCH("/update/password", func (c *gin.Context) {
+      controllers.UpdatePassword(c)
+    })
   }
 }
