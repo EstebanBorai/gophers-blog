@@ -41,7 +41,7 @@ func CreateUser(c *gin.Context) {
   db, err := gorm.Open("mysql", "root:root@tcp(songs-share-db)/songs-share?charset=utf8mb4&parseTime=True&loc=Local")
 
   if err != nil {
-    eh.ResponseWithError(c, 500, "Unable to connect to the database")
+    eh.InternalServerError(c, "Unable to connect to the database")
     return
   } else {
     // TODO: Automigrate on Init
@@ -57,10 +57,10 @@ func CreateUser(c *gin.Context) {
     var isUserNameTaken bool = strings.Contains(errorString, "Error 1062")
 
     if isUserNameTaken == true {
-      eh.ResponseWithError(c, 400, "Username " + user.UserName + " is already taken.")
+      eh.BadRequest(c, "Username " + user.UserName + " is already taken.")
       return
     } else {
-      eh.ResponseWithError(c, 400, errorString)
+      eh.BadRequest(c, errorString)
       return
     }
   }
