@@ -3,19 +3,18 @@ package controllers
 import (
 	"time"
 	"strings"
-	// "encoding/json"
 	"github.com/jinzhu/gorm"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	models "github.com/estebanborai/songs-share-server/models"
-	helpers "github.com/estebanborai/songs-share-server/helpers"
 	eh "github.com/estebanborai/songs-share-server/lib/error_handlers"
 )
 
 type Payload struct {
 	models.User
 	Password string
+	Avatar string
 }
 
 func SignUp(c *gin.Context) {
@@ -29,18 +28,8 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	avatarImage := decodedPayload.File["Avatar"][0]
-
-	file, err := avatarImage.Open(); if err != nil {
-		eh.BadRequest(c, "Unable to open file")
-		return
-	}
-	
-	avatarBase64 := helpers.FileToBase64(file)
-
 	user := models.User {
 		Id: id,
-		Avatar: avatarBase64,
 		UserName: decodedPayload.Value["UserName"][0],
 		FirstName: decodedPayload.Value["FirstName"][0],
 		LastName: decodedPayload.Value["LastName"][0],
@@ -76,12 +65,14 @@ func SignUp(c *gin.Context) {
 		}
 	}
 	
-	_, passwordError := CreatePassword(decodedPayload.Value["Password"][0], user.Id)
-
-	if passwordError != nil {
+	_, passwordError := CreatePassword(decodedPayload.Value["Password"][0], user.Id); if passwordError != nil {
 		eh.ResponseWithError(c, 400, "Invalid Password")
 		return
-	} else {
-		c.JSON(200, user)
 	}
+
+	_, avatarUpdateError := UpdateAvatar(c, decodedPayload.File["Avatar"][0], user.Id); if avatarUpdateError != nil {
+		eh.BadRequest(c, "Unable to gather image")
+	}
+
+	c.JSON(200, user)
 }
