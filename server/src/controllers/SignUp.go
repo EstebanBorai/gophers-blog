@@ -18,7 +18,7 @@ type Payload struct {
   Password string
 }
 
-func CreateUser(c *gin.Context) {
+func SignUp(c *gin.Context) {
   var id string = uuid.New().String()
   var decodedPayload Payload
   var encodedUser string = helpers.ContextRequestBody(c)

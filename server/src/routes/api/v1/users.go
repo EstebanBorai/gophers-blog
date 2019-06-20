@@ -3,7 +3,7 @@ package routes
 import (
   "github.com/gin-gonic/gin"
   "github.com/appleboy/gin-jwt"
-  controllers "github.com/estebanborai/songs-share-server/controllers"
+  controllers "github.com/estebanborai/songs-share-server/controllers/users"
   
 )
 
