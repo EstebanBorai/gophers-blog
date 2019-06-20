@@ -20,14 +20,6 @@ type Payload struct {
 
 func SignUp(c *gin.Context) {
 	var id string = uuid.New().String()
-	// var decodedPayload Payload
-	// var encodedUser string = helpers.ContextRequestBody(c)
-
-	// if err := json.Unmarshal([]byte(encodedUser), &decodedPayload); err != nil {
-	//   var msg string = "Invalid JSON " + err.Error()
-	//   eh.ResponseWithError(c, 400, msg)
-	// }
-	
 	decodedPayload, _ := c.MultipartForm()
 
 	birthDay, dateError := time.Parse(time.RFC3339, decodedPayload.Value["Birthday"][0])
@@ -41,13 +33,14 @@ func SignUp(c *gin.Context) {
 
 	file, err := avatarImage.Open(); if err != nil {
 		eh.BadRequest(c, "Unable to open file")
-	} else {
-		helpers.FileToBase64(file)
+		return
 	}
+	
+	avatarBase64 := helpers.FileToBase64(file)
 
 	user := models.User {
 		Id: id,
-		Avatar: "sarasa", // decodedPayload.File["Avatar"].FileHandler,
+		Avatar: avatarBase64,
 		UserName: decodedPayload.Value["UserName"][0],
 		FirstName: decodedPayload.Value["FirstName"][0],
 		LastName: decodedPayload.Value["LastName"][0],
