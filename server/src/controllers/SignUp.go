@@ -4,11 +4,11 @@ import (
 	"strings"
 	"time"
 
+	data "github.com/estebanborai/songs-share-server/server/src/data"
 	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
 	models "github.com/estebanborai/songs-share-server/server/src/models"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
-	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
@@ -18,6 +18,7 @@ type Payload struct {
 	Avatar   string
 }
 
+// User SignUp Handler
 func SignUp(c *gin.Context) {
 	var id string = uuid.New().String()
 	decodedPayload, _ := c.MultipartForm()
@@ -39,15 +40,10 @@ func SignUp(c *gin.Context) {
 		DateJoined: time.Now(),
 	}
 
-	db, err := gorm.Open("mysql", "root:root@tcp(songs-share-db)/songs-share?charset=utf8mb4&parseTime=True&loc=Local")
+	db := data.Connection(c)
 
-	if err != nil {
-		eh.InternalServerError(c, "Unable to connect to the database")
-		return
-	} else {
-		// TODO: Automigrate on Init
-		db.AutoMigrate(&models.User{})
-	}
+	// TODO: Automigrate on Init
+	db.AutoMigrate(&models.User{})
 
 	defer db.Close()
 
