@@ -1,20 +1,21 @@
 package controllers
 
 import (
-	"time"
 	"strings"
-	"github.com/jinzhu/gorm"
+	"time"
+
+	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	models "github.com/estebanborai/songs-share-server/server/src/models"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	models "github.com/estebanborai/songs-share-server/models"
-	eh "github.com/estebanborai/songs-share-server/lib/error_handlers"
 )
 
 type Payload struct {
 	models.User
 	Password string
-	Avatar string
+	Avatar   string
 }
 
 func SignUp(c *gin.Context) {
@@ -28,13 +29,13 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	user := models.User {
-		Id: id,
-		UserName: decodedPayload.Value["UserName"][0],
-		FirstName: decodedPayload.Value["FirstName"][0],
-		LastName: decodedPayload.Value["LastName"][0],
-		Email: decodedPayload.Value["Email"][0],
-		Birthday: birthDay,
+	user := models.User{
+		Id:         id,
+		UserName:   decodedPayload.Value["UserName"][0],
+		FirstName:  decodedPayload.Value["FirstName"][0],
+		LastName:   decodedPayload.Value["LastName"][0],
+		Email:      decodedPayload.Value["Email"][0],
+		Birthday:   birthDay,
 		DateJoined: time.Now(),
 	}
 
@@ -49,7 +50,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	defer db.Close()
-	
+
 	db.NewRecord(user)
 
 	if dbc := db.Create(&user); dbc.Error != nil {
@@ -57,20 +58,22 @@ func SignUp(c *gin.Context) {
 		var isUserNameTaken bool = strings.Contains(errorString, "Error 1062")
 
 		if isUserNameTaken == true {
-			eh.BadRequest(c, "Username " + user.UserName + " is already taken.")
+			eh.BadRequest(c, "Username "+user.UserName+" is already taken.")
 			return
 		} else {
 			eh.BadRequest(c, errorString)
 			return
 		}
 	}
-	
-	_, passwordError := CreatePassword(decodedPayload.Value["Password"][0], user.Id); if passwordError != nil {
+
+	_, passwordError := CreatePassword(decodedPayload.Value["Password"][0], user.Id)
+	if passwordError != nil {
 		eh.ResponseWithError(c, 400, "Invalid Password")
 		return
 	}
 
-	_, avatarUpdateError := UpdateAvatar(c, decodedPayload.File["Avatar"][0], user.Id); if avatarUpdateError != nil {
+	_, avatarUpdateError := UpdateAvatar(c, decodedPayload.File["Avatar"][0], user.Id)
+	if avatarUpdateError != nil {
 		eh.BadRequest(c, "Unable to gather image")
 	}
 

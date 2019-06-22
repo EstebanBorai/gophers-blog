@@ -2,17 +2,18 @@ package controllers
 
 import (
 	"encoding/json"
+
+	data "github.com/estebanborai/songs-share-server/server/src/data"
+	helpers "github.com/estebanborai/songs-share-server/server/src/helpers"
+	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	models "github.com/estebanborai/songs-share-server/server/src/models"
 	"github.com/gin-gonic/gin"
-	data "github.com/estebanborai/songs-share-server/data"
-	models "github.com/estebanborai/songs-share-server/models"
-	helpers "github.com/estebanborai/songs-share-server/helpers"
-	eh "github.com/estebanborai/songs-share-server/lib/error_handlers"
 )
 
 type UpdateUserPayload struct {
-	UserName string
+	UserName  string
 	FirstName string
-	LastName string
+	LastName  string
 }
 
 func UpdateUser(c *gin.Context) {
@@ -28,12 +29,12 @@ func UpdateUser(c *gin.Context) {
 
 	db := data.Connection(c)
 
-	if result := db.Table("users").Where(&models.User{ Id: userId }).Updates(models.User{
-		UserName: decodedPayload.UserName, 
+	if result := db.Table("users").Where(&models.User{Id: userId}).Updates(models.User{
+		UserName:  decodedPayload.UserName,
 		FirstName: decodedPayload.FirstName,
-		LastName: decodedPayload.LastName,
+		LastName:  decodedPayload.LastName,
 	}); result.Error == nil {
-		db.Where(&models.User{ Id: userId }).First(&user)
+		db.Where(&models.User{Id: userId}).First(&user)
 		c.JSON(200, user)
 	} else {
 		eh.BadRequest(c, result.Error.Error())

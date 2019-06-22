@@ -19,7 +19,7 @@ Now you are able to SSH into the Docker Container for the server and the databas
 In order to run the server, SSH into `songs-share-server` container.
 - Make sure you are in the following path:
 
-`root@<your container id>:/go/src/github.com/estebanborai/songs-share-server#`
+`root@<your container id>:/go/src/github.com/estebanborai/songs-share-server/server/src/#`
 
 - Install dependencies using `dep`:
 `dep ensure`
@@ -31,4 +31,4 @@ In order to run the server, SSH into `songs-share-server` container.
 You are able to make HTTP requests to this server using Postman or any other tool.
 
 ### References
-[API Documentation](https://github.com/estebanborai/songs-share-server/blob/master/docs/Api.md)
+[API Documentation](https://github.com/estebanborai/songs-share-server/server/src/blob/master/docs/Api.md)

@@ -1,9 +1,9 @@
 package helpers
 
 import (
-	"io"
 	"bytes"
 	"encoding/base64"
+	"io"
 	multipart "mime/multipart"
 )
 
@@ -14,6 +14,6 @@ func FileToBase64(f multipart.File) string {
 	}
 
 	base64Str := base64.StdEncoding.EncodeToString(buff.Bytes())
-	
+
 	return base64Str
 }

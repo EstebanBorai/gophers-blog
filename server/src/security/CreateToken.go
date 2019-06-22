@@ -1,33 +1,34 @@
 package security
 
 import (
-  "time"
-  jwt "github.com/dgrijalva/jwt-go"
+	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 func CreateToken(userName string, email string, id string) JWTCookie {
-  tokenExpirationTime := time.Now().Add(5 * time.Minute)
-  
-  claims := &Claims {
-    Id: id,
-    Email: email,
-    UserName: userName,
-    StandardClaims: jwt.StandardClaims {
-      ExpiresAt: tokenExpirationTime.Unix(),
-    },
-  }
+	tokenExpirationTime := time.Now().Add(5 * time.Minute)
 
-  token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	claims := &Claims{
+		Id:       id,
+		Email:    email,
+		UserName: userName,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: tokenExpirationTime.Unix(),
+		},
+	}
 
-  tokenString, err := token.SignedString(JwtSecret)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-  if err != nil {
-    panic(err.Error())
-  }
+	tokenString, err := token.SignedString(JwtSecret)
 
-  return JWTCookie {
-    Name: "token",
-		Value: tokenString,
+	if err != nil {
+		panic(err.Error())
+	}
+
+	return JWTCookie{
+		Name:    "token",
+		Value:   tokenString,
 		Expires: tokenExpirationTime,
-  }
+	}
 }

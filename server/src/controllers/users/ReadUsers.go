@@ -1,17 +1,17 @@
 package controllers
 
 import (
-  "github.com/gin-gonic/gin"
-  data "github.com/estebanborai/songs-share-server/data"
-  models "github.com/estebanborai/songs-share-server/models"
+	data "github.com/estebanborai/songs-share-server/server/src/data"
+	models "github.com/estebanborai/songs-share-server/server/src/models"
+	"github.com/gin-gonic/gin"
 )
 
 func ReadUsers(c *gin.Context) {
-  var users []models.User
+	var users []models.User
 
-  db := data.Connection(c)
-  
-  db.Preload("Avatar").Find(&users)
+	db := data.Connection(c)
 
-  c.JSON(200, users)
+	db.Preload("Avatar").Find(&users)
+
+	c.JSON(200, users)
 }

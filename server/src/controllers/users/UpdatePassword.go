@@ -1,18 +1,19 @@
 package controllers
 
 import (
-	"fmt"
 	"encoding/json"
-  "github.com/gin-gonic/gin"
-  data "github.com/estebanborai/songs-share-server/data"
-  models "github.com/estebanborai/songs-share-server/models"
-	helpers "github.com/estebanborai/songs-share-server/helpers"
-	security "github.com/estebanborai/songs-share-server/security"
-	eh "github.com/estebanborai/songs-share-server/lib/error_handlers"
+	"fmt"
+
+	data "github.com/estebanborai/songs-share-server/server/src/data"
+	helpers "github.com/estebanborai/songs-share-server/server/src/helpers"
+	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	models "github.com/estebanborai/songs-share-server/server/src/models"
+	security "github.com/estebanborai/songs-share-server/server/src/security"
+	"github.com/gin-gonic/gin"
 )
 
 type UpdatePasswordPayload struct {
-	Id string
+	Id       string
 	Password string
 }
 
@@ -29,8 +30,8 @@ func UpdatePassword(c *gin.Context) {
 
 	db := data.Connection(c)
 
-	if userResult := db.Where(&models.User{ Id: decodedPayload.Id }).First(&user); userResult.Error == nil {
-		if userSecretResult := db.Where(&models.UserSecret{ UserId: decodedPayload.Id }).First(&userSecret); userSecretResult.Error == nil {
+	if userResult := db.Where(&models.User{Id: decodedPayload.Id}).First(&user); userResult.Error == nil {
+		if userSecretResult := db.Where(&models.UserSecret{UserId: decodedPayload.Id}).First(&userSecret); userSecretResult.Error == nil {
 			if decodedPayload.Password == "" || decodedPayload.Id == "" {
 				eh.BadRequest(c, "Missing fields")
 			} else {
