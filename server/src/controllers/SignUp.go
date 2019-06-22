@@ -62,7 +62,7 @@ func SignUp(c *gin.Context) {
 		}
 	}
 
-	_, passwordError := CreatePassword(decodedPayload.Value["Password"][0], user.Id)
+	_, passwordError := CreatePassword(c, decodedPayload.Value["Password"][0], user.Id)
 	if passwordError != nil {
 		eh.ResponseWithError(c, 400, "Invalid Password")
 		return

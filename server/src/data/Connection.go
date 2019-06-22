@@ -7,7 +7,9 @@ import (
 )
 
 var connectionString = "root:root@tcp(songs-share-db)/songs-share?charset=utf8mb4&parseTime=True&loc=Local"
-var localConnectionString = "root:root@tcp(33060)/songs-share?charset=utf8mb4&parserTime=True&loc=Local"
+
+// NOTE: docker port <container id> 3306
+var localConnectionString = "root:root@tcp(0.0.0.0:3306)/songs-share?charset=utf8mb4&parseTime=True&loc=Local"
 
 // Connection Creates a connection to the database and returns it
 func Connection(c *gin.Context) (db *gorm.DB) {

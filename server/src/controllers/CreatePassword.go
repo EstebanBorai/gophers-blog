@@ -1,14 +1,15 @@
 package controllers
 
 import (
+	data "github.com/estebanborai/songs-share-server/server/src/data"
 	models "github.com/estebanborai/songs-share-server/server/src/models"
 	security "github.com/estebanborai/songs-share-server/server/src/security"
+	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
-	"github.com/jinzhu/gorm"
 )
 
-func CreatePassword(password string, userId string) (response bool, err error) {
-	db, err := gorm.Open("mysql", "root:root@tcp(songs-share-db)/songs-share?charset=utf8mb4&parseTime=True&loc=Local")
+func CreatePassword(c *gin.Context, password string, userId string) (response bool, err error) {
+	db := data.Connection(c)
 
 	if err != nil {
 		return false, err
