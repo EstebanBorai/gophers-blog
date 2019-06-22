@@ -1,5 +1,5 @@
 # songs-share-server
-🎵 Share your favorite songs with the world
+🎶 Back-End Development for "Songs Share"
 
 ### Getting Started
 This project is made to run it with Docker, you will need to install Docker in your system in order to run this project.
