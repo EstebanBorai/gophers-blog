@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// StartServer assigns routes and initializes server
 func StartServer() {
 	r := gin.Default()
 	store := cookie.NewStore([]byte("songs-share-store"))

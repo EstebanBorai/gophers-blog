@@ -4,8 +4,9 @@ import (
 	"time"
 )
 
+// User represents an user in the platform
 type User struct {
-	Id         string     `gorm:"not null" json:"id"`
+	ID         string     `gorm:"not null" json:"id"`
 	Avatar     Avatar     `gorm:"foreignkey:UserId" json:"avatar"`
 	UserName   string     `gorm:"type:varchar(100);not null;unique_index" json:"userName"`
 	FirstName  string     `gorm:"type:varchar(100);not null;" json:"firstName"`

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// FindUserByUserName returns the user with the userName given
 func FindUserByUserName(c *gin.Context, userName string) {
 	var user models.User
 

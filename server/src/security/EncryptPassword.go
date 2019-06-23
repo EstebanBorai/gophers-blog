@@ -4,6 +4,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// EncryptPassword creates the Hash/Slated version of the plain text password
 func EncryptPassword(password string) string {
 	pwd := []byte(password)
 

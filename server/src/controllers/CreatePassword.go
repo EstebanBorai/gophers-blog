@@ -8,14 +8,15 @@ import (
 	uuid "github.com/google/uuid"
 )
 
-func CreatePassword(c *gin.Context, password string, userId string) (response bool, err error) {
+// CreatePassword stores user hashed password
+func CreatePassword(c *gin.Context, password string, userID string) (response bool, err error) {
 	db := data.Connection(c)
 
 	if err != nil {
 		return false, err
-	} else {
-		db.AutoMigrate(&models.UserSecret{})
 	}
+
+	db.AutoMigrate(&models.UserSecret{})
 
 	defer db.Close()
 
@@ -23,10 +24,10 @@ func CreatePassword(c *gin.Context, password string, userId string) (response bo
 		panic(err.Error())
 	}
 
-	var id string = uuid.New().String()
+	var id = uuid.New().String()
 	userSecret := models.UserSecret{
-		Id:     id,
-		UserId: userId,
+		ID:     id,
+		UserID: userID,
 		Hash:   security.EncryptPassword(password),
 	}
 

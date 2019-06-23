@@ -10,31 +10,34 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// A UpdateUserPayload represents the expected HTTP Body in the request
+// to update user data
 type UpdateUserPayload struct {
 	UserName  string
 	FirstName string
 	LastName  string
 }
 
+// UpdateUser updates user properties based on non-empty and different values
 func UpdateUser(c *gin.Context) {
 	var user models.User
 	var decodedPayload UpdateUserPayload
-	var encodedPayload string = helpers.ContextRequestBody(c)
-	userId := c.Param("id")
+	var encodedPayload = helpers.ContextRequestBody(c)
+	userID := c.Param("id")
 
 	if err := json.Unmarshal([]byte(encodedPayload), &decodedPayload); err != nil {
-		var msg string = "Invalid JSON " + err.Error()
+		var msg = "Invalid JSON " + err.Error()
 		eh.BadRequest(c, msg)
 	}
 
 	db := data.Connection(c)
 
-	if result := db.Table("users").Where(&models.User{Id: userId}).Updates(models.User{
+	if result := db.Table("users").Where(&models.User{ID: userID}).Updates(models.User{
 		UserName:  decodedPayload.UserName,
 		FirstName: decodedPayload.FirstName,
 		LastName:  decodedPayload.LastName,
 	}); result.Error == nil {
-		db.Where(&models.User{Id: userId}).First(&user)
+		db.Where(&models.User{ID: userID}).First(&user)
 		c.JSON(200, user)
 	} else {
 		eh.BadRequest(c, result.Error.Error())

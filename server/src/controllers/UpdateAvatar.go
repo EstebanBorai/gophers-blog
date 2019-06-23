@@ -8,10 +8,11 @@ import (
 	models "github.com/estebanborai/songs-share-server/server/src/models"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-func UpdateAvatar(c *gin.Context, avatarImage *multipart.FileHeader, userId string) (response bool, err error) {
+// UpdateAvatar creates a base64 encoding image and saves it to the specified
+// user as avatar
+func UpdateAvatar(c *gin.Context, avatarImage *multipart.FileHeader, userID string) (response bool, err error) {
 	file, err := avatarImage.Open()
 	if err != nil {
 		return false, err
@@ -23,11 +24,11 @@ func UpdateAvatar(c *gin.Context, avatarImage *multipart.FileHeader, userId stri
 
 	db.AutoMigrate(&models.Avatar{})
 
-	var id string = uuid.New().String()
+	var id = uuid.New().String()
 	avatar := models.Avatar{
-		Id:     id,
+		ID:     id,
 		Image:  avatarBase64,
-		UserId: userId,
+		UserID: userID,
 	}
 
 	db.NewRecord(avatar)

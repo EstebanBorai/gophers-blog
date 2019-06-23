@@ -9,14 +9,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func FindUserById(c *gin.Context, id string) {
+// FindUserByID returs the user with the specified ID
+func FindUserByID(c *gin.Context, ID string) {
 	var user models.User
 
 	db := data.Connection(c)
 
-	if userResult := db.Where(&models.User{Id: id}).First(&user); userResult.Error == nil {
+	if userResult := db.Where(&models.User{ID: ID}).First(&user); userResult.Error == nil {
 		c.JSON(200, user)
 	} else {
-		eh.NotFound(c, fmt.Sprintf("%s doesn't exists", id))
+		eh.NotFound(c, fmt.Sprintf("%s doesn't exists", ID))
 	}
 }

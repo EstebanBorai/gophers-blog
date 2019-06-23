@@ -7,6 +7,9 @@ import (
 	multipart "mime/multipart"
 )
 
+// FileToBase64 receives a binary representation of file from
+// a request with Content-Type: "multipart/form-data" and
+// returns the file encoded in base64
 func FileToBase64(f multipart.File) string {
 	buff := bytes.NewBuffer(nil)
 	if _, err := io.Copy(buff, f); err != nil {

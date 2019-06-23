@@ -1,11 +1,12 @@
 package routes
 
 import (
-	"github.com/appleboy/gin-jwt"
+	jwt "github.com/appleboy/gin-jwt"
 	controllers "github.com/estebanborai/songs-share-server/server/src/controllers/users"
 	"github.com/gin-gonic/gin"
 )
 
+// UsersRoute assigns api/v1/users controllers to routes
 func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
 	users := r.Group("api/v1/users")
 
@@ -17,7 +18,7 @@ func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
 			// TODO: Refactor use single parameter function
 			id := c.Param("id")
 
-			controllers.FindUserById(c, id)
+			controllers.FindUserByID(c, id)
 		})
 
 		users.GET("/username/:username", func(c *gin.Context) {

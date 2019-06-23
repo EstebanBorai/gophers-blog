@@ -4,16 +4,17 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/appleboy/gin-jwt"
+	jwt "github.com/appleboy/gin-jwt"
 	models "github.com/estebanborai/songs-share-server/server/src/models"
 	security "github.com/estebanborai/songs-share-server/server/src/security"
 	"github.com/gin-gonic/gin"
 )
 
-var identityKey string = "id"
-var email string = "email"
-var userName string = "userName"
+var identityKey = "id"
+var email = "email"
+var userName = "userName"
 
+// AuthMiddleware setups the JWT-Authentication middleware
 func AuthMiddleware() *jwt.GinJWTMiddleware {
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "songs-share-auth",
@@ -24,7 +25,7 @@ func AuthMiddleware() *jwt.GinJWTMiddleware {
 		PayloadFunc: func(data interface{}) jwt.MapClaims {
 			if v, ok := data.(*models.User); ok {
 				return jwt.MapClaims{
-					identityKey: v.Id,
+					identityKey: v.ID,
 					email:       v.Email,
 					userName:    v.UserName,
 				}
@@ -34,7 +35,7 @@ func AuthMiddleware() *jwt.GinJWTMiddleware {
 		IdentityHandler: func(c *gin.Context) interface{} {
 			claims := jwt.ExtractClaims(c)
 			return &models.User{
-				Id:       claims["id"].(string),
+				ID:       claims["id"].(string),
 				Email:    claims["email"].(string),
 				UserName: claims["userName"].(string),
 			}
@@ -50,7 +51,7 @@ func AuthMiddleware() *jwt.GinJWTMiddleware {
 
 			if err == nil {
 				return &models.User{
-					Id:       user.Id,
+					ID:       user.ID,
 					UserName: user.UserName,
 					Email:    user.Email,
 				}, nil

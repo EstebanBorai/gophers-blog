@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// ReadUsers indexes all users in the database
 func ReadUsers(c *gin.Context) {
 	var users []models.User
 

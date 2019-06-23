@@ -1,7 +1,6 @@
 package security
 
 import (
-	"errors"
 	"fmt"
 
 	data "github.com/estebanborai/songs-share-server/server/src/data"
@@ -9,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// ValidateUser makes sure the plainPassword matches with the userName given
 func ValidateUser(c *gin.Context, userName string, plainPassword string) (models.User, error) {
 	var user models.User
 	var userSecret models.UserSecret
@@ -16,16 +16,16 @@ func ValidateUser(c *gin.Context, userName string, plainPassword string) (models
 	db := data.Connection(c)
 
 	if userResult := db.Where(&models.User{UserName: userName}).First(&user); userResult.Error == nil {
-		if credsResult := db.Where(&models.UserSecret{UserId: user.Id}).First(&userSecret); credsResult.Error == nil {
+		if credsResult := db.Where(&models.UserSecret{UserID: user.ID}).First(&userSecret); credsResult.Error == nil {
 			if ValidatePassword(userSecret.Hash, plainPassword) {
 				return user, nil
-			} else {
-				return user, errors.New("Invalid Password")
 			}
+
+			return user, fmt.Errorf("Invalid password")
 		}
 
-		return user, errors.New("Cannot validate User")
-	} else {
-		return user, errors.New(fmt.Sprintf("%s doesn't exists", userName))
+		return user, fmt.Errorf("Invalid username")
 	}
+
+	return user, fmt.Errorf(fmt.Sprintf("%s doesn't exist.", userName))
 }
