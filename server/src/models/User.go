@@ -15,4 +15,5 @@ type User struct {
 	Birthday   time.Time  `gorm:"not null" json:"birthday"`
 	DateJoined time.Time  `gorm:"not null" json:"dateJoined"`
 	UserSecret UserSecret `gorm:"foreignkey:UserId" json:"-"`
+	Active     bool       `gorm:"type:tinyint;not null;default:1;" json:"-"`
 }

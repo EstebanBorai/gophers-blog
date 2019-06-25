@@ -31,5 +31,7 @@ func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
 		users.PATCH("/id/:id", controllers.UpdateUser)
 
 		users.PATCH("/update/password", controllers.UpdatePassword)
+
+		users.DELETE("/id/:id", controllers.DeactivateUser)
 	}
 }
