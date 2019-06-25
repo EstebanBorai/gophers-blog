@@ -12,7 +12,7 @@ func ReadUsers(c *gin.Context) {
 
 	db := data.Connection(c)
 
-	db.Preload("Avatar").Find(&users)
+	db.Preload("Avatar").Find(&users, &models.User{Active: true})
 
 	c.JSON(200, users)
 }
