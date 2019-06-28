@@ -30,7 +30,7 @@ func UsersRoute(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) {
 
 		users.PATCH("/update/password", controllers.UpdatePassword)
 
-		users.PATCH("/update/avatar", func(c *gin.Context) {
+		users.PATCH("/update/avatar/:id", func(c *gin.Context) {
 			var userID = c.Param("id")
 
 			controllers.UpdateAvatar(c, userID)
