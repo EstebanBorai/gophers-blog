@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	users "github.com/estebanborai/songs-share-server/server/src/controllers/users"
 	data "github.com/estebanborai/songs-share-server/server/src/data"
 	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
 	models "github.com/estebanborai/songs-share-server/server/src/models"
@@ -69,9 +70,10 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	_, avatarUpdateError := UpdateAvatar(c, decodedPayload.File["Avatar"][0], user.ID)
-	if avatarUpdateError != nil {
-		eh.BadRequest(c, "Unable to gather image")
+	avatarUpdate := users.UpdateAvatar(c, id)
+
+	if avatarUpdate == false {
+		eh.BadRequest(c, "Unable to set avatar")
 	}
 
 	c.JSON(200, user)
