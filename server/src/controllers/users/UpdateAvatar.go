@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"mime/multipart"
-
 	data "github.com/estebanborai/songs-share-server/server/src/data"
 	"github.com/estebanborai/songs-share-server/server/src/helpers"
 	"github.com/estebanborai/songs-share-server/server/src/helpers/gimlet"
@@ -11,28 +9,24 @@ import (
 	"github.com/google/uuid"
 )
 
-func isAvatarAvailable(payload *multipart.Form) bool {
-	if payload.File["Avatar"] == nil {
-		return false
-	}
-
-	if payload.File["Avatar"][0] == nil {
-		return false
-	}
-
-	return true
-}
-
 // UpdateAvatar stores an user's avatar
 func UpdateAvatar(c *gin.Context, userID string) bool {
 	var avatarID = uuid.New().String()
 	decodedPayload, _ := c.MultipartForm()
 
-	if !isAvatarAvailable(decodedPayload) {
+	if decodedPayload == nil {
 		return true
 	}
 
-	avatarFile := decodedPayload.File["Avatar"][0]
+	if len(decodedPayload.File) == 0 {
+		return true
+	}
+
+	if _, ok := decodedPayload.File["avatar"]; !ok {
+		return true
+	}
+
+	avatarFile := decodedPayload.File["avatar"][0]
 
 	if avatarFile != nil {
 		file, err := avatarFile.Open()

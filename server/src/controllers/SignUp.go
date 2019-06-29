@@ -26,7 +26,7 @@ func SignUp(c *gin.Context) {
 	var id = uuid.New().String()
 	decodedPayload, _ := c.MultipartForm()
 
-	birthDay, dateError := time.Parse(time.RFC3339, decodedPayload.Value["Birthday"][0])
+	birthDay, dateError := time.Parse(time.RFC3339, decodedPayload.Value["birthday"][0])
 
 	if dateError != nil {
 		gimlet.BadRequest(c, "Invalid Date")
@@ -35,10 +35,10 @@ func SignUp(c *gin.Context) {
 
 	user := models.User{
 		ID:         id,
-		UserName:   decodedPayload.Value["UserName"][0],
-		FirstName:  decodedPayload.Value["FirstName"][0],
-		LastName:   decodedPayload.Value["LastName"][0],
-		Email:      decodedPayload.Value["Email"][0],
+		UserName:   decodedPayload.Value["userName"][0],
+		FirstName:  decodedPayload.Value["firstName"][0],
+		LastName:   decodedPayload.Value["lastName"][0],
+		Email:      decodedPayload.Value["email"][0],
 		Birthday:   birthDay,
 		DateJoined: time.Now(),
 	}
@@ -65,7 +65,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	_, passwordError := CreatePassword(c, decodedPayload.Value["Password"][0], user.ID)
+	_, passwordError := CreatePassword(c, decodedPayload.Value["password"][0], user.ID)
 	if passwordError != nil {
 		gimlet.BadRequest(c, "Invalid Password")
 		return
