@@ -1,7 +1,7 @@
 package data
 
 import (
-	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	"github.com/estebanborai/songs-share-server/server/src/helpers/gimlet"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
@@ -16,7 +16,7 @@ func Connection(c *gin.Context) (db *gorm.DB) {
 	db, err := gorm.Open("mysql", localConnectionString)
 
 	if err != nil {
-		eh.SpecialError(c, "Unable to connect to the database", err)
+		gimlet.InternalServerError(c, "Unable to connect to the database")
 	}
 
 	return db

@@ -6,7 +6,7 @@ import (
 
 	data "github.com/estebanborai/songs-share-server/server/src/data"
 	helpers "github.com/estebanborai/songs-share-server/server/src/helpers"
-	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	"github.com/estebanborai/songs-share-server/server/src/helpers/gimlet"
 	models "github.com/estebanborai/songs-share-server/server/src/models"
 	security "github.com/estebanborai/songs-share-server/server/src/security"
 	"github.com/gin-gonic/gin"
@@ -28,7 +28,7 @@ func UpdatePassword(c *gin.Context) {
 
 	if err := json.Unmarshal([]byte(encodedPayload), &decodedPayload); err != nil {
 		var msg = "Invalid JSON " + err.Error()
-		eh.BadRequest(c, msg)
+		gimlet.BadRequest(c, msg)
 	}
 
 	db := data.Connection(c)
@@ -36,15 +36,15 @@ func UpdatePassword(c *gin.Context) {
 	if userResult := db.Where(&models.User{ID: decodedPayload.ID}).First(&user); userResult.Error == nil {
 		if userSecretResult := db.Where(&models.UserSecret{UserID: decodedPayload.ID}).First(&userSecret); userSecretResult.Error == nil {
 			if decodedPayload.Password == "" || decodedPayload.ID == "" {
-				eh.BadRequest(c, "Missing fields")
+				gimlet.BadRequest(c, "Missing fields")
 			} else {
 				db.Model(&userSecret).Update("hash", security.EncryptPassword(decodedPayload.Password))
 				c.JSON(200, nil)
 			}
 		} else {
-			eh.InternalServerError(c, userSecretResult.Error.Error())
+			gimlet.InternalServerError(c, userSecretResult.Error.Error())
 		}
 	} else {
-		eh.NotFound(c, fmt.Sprintf("%s doesn't exists", decodedPayload.ID))
+		gimlet.NotFound(c, fmt.Sprintf("%s doesn't exists", decodedPayload.ID))
 	}
 }

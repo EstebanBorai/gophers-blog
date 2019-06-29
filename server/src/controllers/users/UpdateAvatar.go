@@ -5,7 +5,7 @@ import (
 
 	data "github.com/estebanborai/songs-share-server/server/src/data"
 	"github.com/estebanborai/songs-share-server/server/src/helpers"
-	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	"github.com/estebanborai/songs-share-server/server/src/helpers/gimlet"
 	"github.com/estebanborai/songs-share-server/server/src/models"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -38,7 +38,7 @@ func UpdateAvatar(c *gin.Context, userID string) bool {
 		file, err := avatarFile.Open()
 
 		if err != nil {
-			eh.BadRequest(c, err.Error())
+			gimlet.InternalServerError(c, err.Error())
 		} else {
 			avatarBase64 := helpers.FileToBase64(file)
 

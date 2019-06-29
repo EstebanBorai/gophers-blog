@@ -5,7 +5,7 @@ import (
 
 	data "github.com/estebanborai/songs-share-server/server/src/data"
 	helpers "github.com/estebanborai/songs-share-server/server/src/helpers"
-	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	"github.com/estebanborai/songs-share-server/server/src/helpers/gimlet"
 	models "github.com/estebanborai/songs-share-server/server/src/models"
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +27,7 @@ func UpdateUser(c *gin.Context) {
 
 	if err := json.Unmarshal([]byte(encodedPayload), &decodedPayload); err != nil {
 		var msg = "Invalid JSON " + err.Error()
-		eh.BadRequest(c, msg)
+		gimlet.BadRequest(c, msg)
 	}
 
 	db := data.Connection(c)
@@ -40,6 +40,6 @@ func UpdateUser(c *gin.Context) {
 		db.Where(&models.User{ID: userID}).First(&user)
 		c.JSON(200, user)
 	} else {
-		eh.BadRequest(c, result.Error.Error())
+		gimlet.BadRequest(c, result.Error.Error())
 	}
 }
