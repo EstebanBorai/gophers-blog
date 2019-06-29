@@ -50,4 +50,4 @@ package-lock.json
 yarn.lock
 server/src/vendor
 server/pkg/
-
+__debug_bin

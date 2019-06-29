@@ -1,11 +1,13 @@
 package controllers
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
+	users "github.com/estebanborai/songs-share-server/server/src/controllers/users"
 	data "github.com/estebanborai/songs-share-server/server/src/data"
-	eh "github.com/estebanborai/songs-share-server/server/src/lib/error_handlers"
+	"github.com/estebanborai/songs-share-server/server/src/helpers/gimlet"
 	models "github.com/estebanborai/songs-share-server/server/src/models"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
@@ -24,19 +26,19 @@ func SignUp(c *gin.Context) {
 	var id = uuid.New().String()
 	decodedPayload, _ := c.MultipartForm()
 
-	birthDay, dateError := time.Parse(time.RFC3339, decodedPayload.Value["Birthday"][0])
+	birthDay, dateError := time.Parse(time.RFC3339, decodedPayload.Value["birthday"][0])
 
 	if dateError != nil {
-		eh.BadRequest(c, "Invalid Date")
+		gimlet.BadRequest(c, "Invalid Date")
 		return
 	}
 
 	user := models.User{
 		ID:         id,
-		UserName:   decodedPayload.Value["UserName"][0],
-		FirstName:  decodedPayload.Value["FirstName"][0],
-		LastName:   decodedPayload.Value["LastName"][0],
-		Email:      decodedPayload.Value["Email"][0],
+		UserName:   decodedPayload.Value["userName"][0],
+		FirstName:  decodedPayload.Value["firstName"][0],
+		LastName:   decodedPayload.Value["lastName"][0],
+		Email:      decodedPayload.Value["email"][0],
 		Birthday:   birthDay,
 		DateJoined: time.Now(),
 	}
@@ -55,23 +57,24 @@ func SignUp(c *gin.Context) {
 		var isUserNameTaken = strings.Contains(errorString, "Error 1062")
 
 		if isUserNameTaken == true {
-			eh.BadRequest(c, "Username "+user.UserName+" is already taken.")
+			gimlet.BadRequest(c, fmt.Sprintf("Username %s is already taken", user.UserName))
 			return
 		}
 
-		eh.BadRequest(c, errorString)
+		gimlet.InternalServerError(c, errorString)
 		return
 	}
 
-	_, passwordError := CreatePassword(c, decodedPayload.Value["Password"][0], user.ID)
+	_, passwordError := CreatePassword(c, decodedPayload.Value["password"][0], user.ID)
 	if passwordError != nil {
-		eh.ResponseWithError(c, 400, "Invalid Password")
+		gimlet.BadRequest(c, "Invalid Password")
 		return
 	}
 
-	_, avatarUpdateError := UpdateAvatar(c, decodedPayload.File["Avatar"][0], user.ID)
-	if avatarUpdateError != nil {
-		eh.BadRequest(c, "Unable to gather image")
+	avatarUpdate := users.UpdateAvatar(c, id)
+
+	if avatarUpdate == false {
+		gimlet.BadRequest(c, "Unable to set avatar")
 	}
 
 	c.JSON(200, user)
