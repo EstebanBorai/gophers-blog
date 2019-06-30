@@ -1,5 +1,13 @@
-# songs-share-server
-🎶 Back-End Development for "Songs Share"
+# go-server-sample
+⚡ REST API sample written in Go using Gin, Gorm and JWT Authentication
+
+## Songs-Share
+Songs-Share used to be the concept of the project as a feed to share songs.
+This project is created for educational purposes.
+Any contribution or improvement is welcome.
+
+## What's inside?
+This API is capable to store Users with authentication capabilities.
 
 ## Getting Started
 Theres two ways of running this project, either locally (requires *Go* and *dep* installed in your system), or with Docker (requires *Docker* installed in your system).
