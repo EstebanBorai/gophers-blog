@@ -1,79 +1,109 @@
 # go-server-sample
 ⚡ REST API sample written in Go using Gin, Gorm and JWT Authentication
 
-## Why the project says "songs-share-server" anywhere?
-Songs-Share used to be the concept of the project as a feed to share songs.
-This project is created for educational purposes.
-Any contribution or improvement is welcome.
+<div align="center">
+	<img src="" alt="Gopher Brown" />
+</div>
 
-## What's inside?
-This API is capable to store Users with authentication capabilities.
+> Hobbyist project that aims to develop a REST API written in Go, using Gin as Web API Framework, Gorm as ORM for MySQL and authentication through JWT.
 
 ## Getting Started
-Theres two ways of running this project, either locally (requires *Go* and *dep* installed in your system), or with Docker (requires *Docker* installed in your system).
+This project is written in Go but you can run in your machine using Docker,
+with *docker-compose* you will be able to build and run a couple containers, one for
+the server and another for the database.
 
-### Locally
-You will have to clone the project in your `GOPATH/src/github.com/estebanborai/*` directory.
-In order to achieve that, run the following command:
+## Requirements
+-	[Docker (optional)](https://www.docker.com/get-started)
+- [Go (optional/recommended)](https://www.docker.com/get-started)
+
+## Setup
+Clone the project. If you are using Docker you can clone it anywhere in your system, if you are using Go
+you should clone it inside your `$GOPATH`'s `src` directory.
 
 ```bash
-# create github.com/estebanborai directory in your GOPATH/src directory
+# if you are using Go installed locally, create a github.com/username folder for
+# this project
 mkdir -p $GOPATH/src/github.com/estebanborai
+
+# then clone the project, either anywhere or $GOPATH/src/github.com/estebanborai/
+git clone https://github.com/estebanborai/go-server-sample.git
 ```
 
-Then you will be able to clone the project repository as follows:
+The following are instructions for Go users, if you are running the project using *Dcoker* installed in your machine, go to *Docker*'s section.
+
+### Go
+1. Install dependencies using *Golang's* [dep](https://golang.github.io/dep/):
 ```bash
-# step into the main file directory
-cd $GOPATH/src/github.com/estebanborai/
+# step into project directory
+cd $GOPATH/src/github.com/estebanborai
 
-# clone the project in your system using Git
-git clone https://github.com/estebanborai/songs-share-server.git
-```
-
-Songs-Share server is a GIN powered REST API that connects to MySQL using an ORM (Object Relational Mapping) library called GORM,
-you will need to setup MySQL or build and run the docker image that comes with the repository which is ready for this purpose.
-
-`docker-compose -f docker-compose.db.yml up --build`
-
-Now we are able to run our database, first open a new terminal, as the following terminal will be attached to the *Docker/MySQL* container process.
-
-```bash
-# install dependencies using dep
+# gather dependencies
 dep ensure
+```
 
-# make sure you have MySQL server running in your system
-# and run main.go as follows
+2. Running the database using Docker
+Docker is required to run the `MySQL` database.
+If you are not using Docker, you can also run the project with your local `MySQL` instance.
+[src/data/Connection.go]() Manages the connection to the database, you can setup your connection string
+from there in order to run this project with your local setup.
+
+> Note: If you are setting up MySQL for this project, please follow Gorm instructions for compatibility with MySQL databases. [Gorm/MySQL Setup](http://gorm.io/docs/connecting_to_the_database.html#MySQL)
+
+Theres two *docker-compose* files you can use in this project, one for a complete environment with Docker (*docker-compose.yml*) and the other for a database only usage (*docker-compose.db.yml*).
+
+For this case you should use the second one.
+```bash
+# $GOPATH/src/github.com/estebanborai/go-server-sample
+docker-compose -f docker-compose.db.yml up --build
+```
+
+3. Set your environment variable
+Make sure the `.env` file is using `SERVER_ENV` as `LOCAL`
+You can find the `.env` file at: `$GOPATH/src/github.com/estebanborai/go-server-sample/server/src/`
+```
+SERVER_ENV=LOCAL
+
+```
+
+4. Running the server using go
+Finally you are able to run the server using *Go*.
+```bash
+# $GOPATH/src/github.com/estebanborai/go-server-sample/server/src/
 go run main.go
 ```
 
 ### Docker
+In order to run the project using docker, you should build the docker images for *Go* and *MySQL*, then run them using `docker-compose` command.
 
+1. Step into project root directory
 ```bash
-# run docker-compose
-docker-compose up --build
-
-# Expect the following log
-Starting songs-share-db ... done
-Recreating songs-share-server ... done
+cd $GOPATH/src/github.com/estebanborai/go-server-sample
 ```
 
-Now you are able to SSH into the Docker Container for the server and the database instances of SongsShare.
+2. Make sure the environment variable is set to `DOCKER`
+```bash
+# move to server/src
+cd $GOPATH/src/github.com/estebanborai/go-server-sample/server/src/
 
-#### Running Server (SSH into Docker Container)
+# print the contents of .env file
+cat .env
 
-In order to run the server, SSH into `songs-share-server` container.
-- Make sure you are in the following path:
+# expect the following output
+SERVER_ENV=DOCKER
 
-`root@<your container id>:/go/src/github.com/estebanborai/songs-share-server/server/src/#`
+# if this argument is set to another value, please set it to 'DOCKER'
+```
 
-- Install dependencies using `dep`:
-`dep ensure`
+3. Build and run Docker containers
+```bash
+# $GOPATH/src/github.com/estebanborai/go-server-sample/
+docker-compose up --build
+```
 
-- Then run `go run main.go` command and expect the following output:
+The following URL should be runing the project.
+`http://localhost:8080/`
 
-`[GIN-debug] Listening and serving HTTP on :8080`
+You should be able to make requests to this API using Postman or another HTTP requests client.
 
-You are able to make HTTP requests to this server using Postman or any other tool.
-
-## References
-[API Documentation](https://github.com/estebanborai/songs-share-server/server/src/blob/master/docs/Api.md)
+## Contributions
+Contributions and enhancements are welcome for this project, there's a lot of improvements to be made.

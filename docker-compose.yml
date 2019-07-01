@@ -9,7 +9,7 @@ services:
       MYSQL_DATABASE: songs-share
       MYSQL_USER: admin
       MYSQL_PASSWORD: admin
-    container_name: songs-share-db
+    container_name: go-server-sample-db
     tty: true
     ports:
       - "3306:3306"
@@ -17,8 +17,8 @@ services:
     build:
       context: ./server
     volumes:
-      - "./server/src/:/go/src/github.com/estebanborai/songs-share-server/server/src/"
-    container_name: songs-share-server
+      - "./server/src/:/go/src/github.com/estebanborai/go-server-sample/server/src/"
+    container_name: go-server-sample-server
     ports:
       - "8080:8080"
     tty: true

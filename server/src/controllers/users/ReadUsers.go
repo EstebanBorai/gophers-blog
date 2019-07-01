@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	data "github.com/estebanborai/songs-share-server/server/src/data"
-	models "github.com/estebanborai/songs-share-server/server/src/models"
+	data "github.com/estebanborai/go-server-sample/server/src/data"
+	models "github.com/estebanborai/go-server-sample/server/src/models"
 	"github.com/gin-gonic/gin"
 )
 

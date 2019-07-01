@@ -2,7 +2,7 @@ package routes
 
 import (
 	jwt "github.com/appleboy/gin-jwt"
-	controllers "github.com/estebanborai/songs-share-server/server/src/controllers/users"
+	controllers "github.com/estebanborai/go-server-sample/server/src/controllers/users"
 	"github.com/gin-gonic/gin"
 )
 

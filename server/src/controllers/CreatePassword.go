@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	data "github.com/estebanborai/songs-share-server/server/src/data"
-	models "github.com/estebanborai/songs-share-server/server/src/models"
-	security "github.com/estebanborai/songs-share-server/server/src/security"
+	data "github.com/estebanborai/go-server-sample/server/src/data"
+	models "github.com/estebanborai/go-server-sample/server/src/models"
+	security "github.com/estebanborai/go-server-sample/server/src/security"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/google/uuid"
 )
