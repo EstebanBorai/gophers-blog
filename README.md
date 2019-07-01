@@ -2,13 +2,13 @@
 ⚡ REST API sample written in Go using Gin, Gorm and JWT Authentication
 
 <div align="center">
-	<img src="" alt="Gopher Brown" />
+	<img src="https://raw.githubusercontent.com/estebanborai/go-server-sample/master/misc/gopher.png" alt="Gopher Brown" />
 </div>
 
 > Hobbyist project that aims to develop a REST API written in Go, using Gin as Web API Framework, Gorm as ORM for MySQL and authentication through JWT.
 
 ## Getting Started
-This project is written in Go but you can run in your machine using Docker,
+This project is written in Go but you can run it in your machine using Docker,
 with *docker-compose* you will be able to build and run a couple containers, one for
 the server and another for the database.
 
@@ -44,7 +44,7 @@ dep ensure
 2. Running the database using Docker
 Docker is required to run the `MySQL` database.
 If you are not using Docker, you can also run the project with your local `MySQL` instance.
-[src/data/Connection.go]() Manages the connection to the database, you can setup your connection string
+[src/data/Connection.go](https://github.com/estebanborai/go-server-sample/blob/master/server/src/data/Connection.go) Manages the connection to the database, you can setup your connection string
 from there in order to run this project with your local setup.
 
 > Note: If you are setting up MySQL for this project, please follow Gorm instructions for compatibility with MySQL databases. [Gorm/MySQL Setup](http://gorm.io/docs/connecting_to_the_database.html#MySQL)
