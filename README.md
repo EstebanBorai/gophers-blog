@@ -1,7 +1,7 @@
 # go-server-sample
 ⚡ REST API sample written in Go using Gin, Gorm and JWT Authentication
 
-## Songs-Share
+## Why the project says "songs-share-server" anywhere?
 Songs-Share used to be the concept of the project as a feed to share songs.
 This project is created for educational purposes.
 Any contribution or improvement is welcome.
