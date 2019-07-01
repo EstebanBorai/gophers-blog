@@ -5,8 +5,8 @@ import (
 	"time"
 
 	jwt "github.com/appleboy/gin-jwt"
-	models "github.com/estebanborai/songs-share-server/server/src/models"
-	security "github.com/estebanborai/songs-share-server/server/src/security"
+	models "github.com/estebanborai/go-server-sample/server/src/models"
+	security "github.com/estebanborai/go-server-sample/server/src/security"
 	"github.com/gin-gonic/gin"
 )
 

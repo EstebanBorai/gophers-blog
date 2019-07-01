@@ -1,9 +1,9 @@
 package routes
 
 import (
-	controllers "github.com/estebanborai/songs-share-server/server/src/controllers"
-	middleware "github.com/estebanborai/songs-share-server/server/src/middleware"
-	v1 "github.com/estebanborai/songs-share-server/server/src/routes/api/v1"
+	controllers "github.com/estebanborai/go-server-sample/server/src/controllers"
+	middleware "github.com/estebanborai/go-server-sample/server/src/middleware"
+	v1 "github.com/estebanborai/go-server-sample/server/src/routes/api/v1"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
