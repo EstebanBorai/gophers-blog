@@ -1,4 +1,4 @@
-# go-server-sample
+# go-rest-gin-test-drive
 ⚡ REST API sample written in Go using Gin, Gorm and JWT Authentication
 
 <div align="center">
