@@ -1,26 +1,12 @@
-version: '3'
+version: '3.6'
+
 services:
-  database:
+  api:
     build:
-      context: ./database
-    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+      context: .
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: songs-share
-      MYSQL_USER: admin
-      MYSQL_PASSWORD: admin
-    container_name: go-server-sample-db
-    tty: true
+      - GO111MODULE=off
     ports:
-      - "3306:3306"
-  server:
-    build:
-      context: ./server
+      - 4200:4200
     volumes:
-      - "./server/src/:/go/src/github.com/estebanborai/go-server-sample/server/src/"
-    container_name: go-server-sample-server
-    ports:
-      - "8080:8080"
-    tty: true
-    depends_on:
-      - database
+      - ./:/go/src/github.com/EstebanBorai/gosk

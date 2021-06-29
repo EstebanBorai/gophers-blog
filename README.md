@@ -1,109 +1,83 @@
-# go-rest-gin-test-drive
-⚡ REST API sample written in Go using Gin, Gorm and JWT Authentication
-
-<div align="center">
-	<img src="https://raw.githubusercontent.com/estebanborai/go-server-sample/master/misc/gopher.png" alt="Gopher Brown" />
+<div>
+  <h1 align="center">gosk</h1>
+  <h4 align="center">
+    Golang Starter-Kit, a dockerized project with a sample HTTP Server.
+    Useful for prototyping and writing tests with Golang
+  </h4>
 </div>
 
-> Hobbyist project that aims to develop a REST API written in Go, using Gin as Web API Framework, Gorm as ORM for MySQL and authentication through JWT.
+## Usage
 
-## Getting Started
-This project is written in Go but you can run it in your machine using Docker,
-with *docker-compose* you will be able to build and run a couple containers, one for
-the server and another for the database.
+> Make sure you hace Docker, Docker-Compose and Make available in your system
 
-## Requirements
--	[Docker (optional)](https://www.docker.com/get-started)
-- [Go (optional/recommended)](https://www.docker.com/get-started)
+1. Clone this repository or click on the **Use template** button to create a
+repository from this template
 
-## Setup
-Clone the project. If you are using Docker you can clone it anywhere in your system, if you are using Go
-you should clone it inside your `$GOPATH`'s `src` directory.
+2. Run `make up` to build and execute the project
 
-```bash
-# if you are using Go installed locally, create a github.com/username folder for
-# this project
-mkdir -p $GOPATH/src/github.com/estebanborai
-
-# then clone the project, either anywhere or $GOPATH/src/github.com/estebanborai/
-git clone https://github.com/estebanborai/go-server-sample.git
+```log
+api_1  | Running build command!
+api_1  | Build ok.
+api_1  | Restarting the given command.
+api_1  | 2021/05/30 02:58:54 Listening on http://0.0.0.0:4200
 ```
 
-The following are instructions for Go users, if you are running the project using *Dcoker* installed in your machine, go to *Docker*'s section.
+3. Make a GET HTTP request to `http://0.0.0.0:4200`
 
-### Go
-1. Install dependencies using *Golang's* [dep](https://golang.github.io/dep/):
-```bash
-# step into project directory
-cd $GOPATH/src/github.com/estebanborai
-
-# gather dependencies
-dep ensure
+```log
+$ curl -v http://0.0.0.0:4200
+*   Trying 0.0.0.0...
+* TCP_NODELAY set
+* Connected to 0.0.0.0 (127.0.0.1) port 4200 (#0)
+> GET / HTTP/1.1
+> Host: 0.0.0.0:4200
+> User-Agent: curl/7.64.1
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Date: Sun, 30 May 2021 03:03:45 GMT
+< Content-Length: 18
+< Content-Type: text/plain; charset=utf-8
+<
+* Connection #0 to host 0.0.0.0 left intact
+Hello from Golang!
+* Closing connection 0
 ```
 
-2. Running the database using Docker
-Docker is required to run the `MySQL` database.
-If you are not using Docker, you can also run the project with your local `MySQL` instance.
-[src/data/Connection.go](https://github.com/estebanborai/go-server-sample/blob/master/server/src/data/Connection.go) Manages the connection to the database, you can setup your connection string
-from there in order to run this project with your local setup.
+### Stop the Server and Clean up
 
-> Note: If you are setting up MySQL for this project, please follow Gorm instructions for compatibility with MySQL databases. [Gorm/MySQL Setup](http://gorm.io/docs/connecting_to_the_database.html#MySQL)
+Use `Ctrl+C` to stop the Docker process and then run `make clean`
 
-Theres two *docker-compose* files you can use in this project, one for a complete environment with Docker (*docker-compose.yml*) and the other for a database only usage (*docker-compose.db.yml*).
+```log
+$ make down
+docker-compose down
+Removing gosk_1 ... done
+Removing network gosk_default
+Cleaning up process
+rm -f out
+docker system prune -f
+Deleted build cache objects:
+o0hk8vfugh3s39gbt18bhmdbr
+9frn6250oe8vhx3vermtg42fa
+jgn1flx1o9tdo6fzt5wshgxaf
+kbk1w9lo5bworx8ixr1waj0qj
+4t7egfao289sp8um4gkqfp0dd
+6cv0qskklp34c56vcse3aigkb
 
-For this case you should use the second one.
-```bash
-# $GOPATH/src/github.com/estebanborai/go-server-sample
-docker-compose -f docker-compose.db.yml up --build
+Total reclaimed space: 12.42MB
+docker volume prune -f
+Total reclaimed space: 0B
 ```
 
-3. Set your environment variable
-Make sure the `.env` file is using `SERVER_ENV` as `LOCAL`
-You can find the `.env` file at: `$GOPATH/src/github.com/estebanborai/go-server-sample/server/src/`
-```
-SERVER_ENV=LOCAL
+## Caveats
+
+* To avoid the error:
 
 ```
-
-4. Running the server using go
-Finally you are able to run the server using *Go*.
-```bash
-# $GOPATH/src/github.com/estebanborai/go-server-sample/server/src/
-go run main.go
+  Error while building:
+  cmd/main.go:5:2: no required module provides package <package url>; to add it:
+      go get <package url>
 ```
 
-### Docker
-In order to run the project using docker, you should build the docker images for *Go* and *MySQL*, then run them using `docker-compose` command.
-
-1. Step into project root directory
-```bash
-cd $GOPATH/src/github.com/estebanborai/go-server-sample
-```
-
-2. Make sure the environment variable is set to `DOCKER`
-```bash
-# move to server/src
-cd $GOPATH/src/github.com/estebanborai/go-server-sample/server/src/
-
-# print the contents of .env file
-cat .env
-
-# expect the following output
-SERVER_ENV=DOCKER
-
-# if this argument is set to another value, please set it to 'DOCKER'
-```
-
-3. Build and run Docker containers
-```bash
-# $GOPATH/src/github.com/estebanborai/go-server-sample/
-docker-compose up --build
-```
-
-The following URL should be runing the project.
-`http://localhost:8080/`
-
-You should be able to make requests to this API using Postman or another HTTP requests client.
-
-## Contributions
-Contributions and enhancements are welcome for this project, there's a lot of improvements to be made.
+The `go.mod` file is removed and the environment variable `GO111MODULE` is set
+to `off`.
