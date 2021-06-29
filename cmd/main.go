@@ -1,10 +1,10 @@
 package main
 
-import s "github.com/EstebanBorai/gosk/pkg/server"
+import "github.com/EstebanBorai/hkroom/pkg"
 
 func main() {
-	var httpServer s.Server = s.MakeServer(4200)
+	repository := pkg.NewRepository()
+	server := pkg.NewServer(&repository)
 
-	httpServer.UseLogs()
-	httpServer.Serve()
+	server.Serve()
 }

@@ -9,4 +9,4 @@ services:
     ports:
       - 4200:4200
     volumes:
-      - ./:/go/src/github.com/EstebanBorai/gosk
+      - ./:/go/src/github.com/EstebanBorai/hkroom

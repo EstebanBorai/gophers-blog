@@ -1,6 +1,6 @@
 FROM golang:1.16
 
-WORKDIR /go/src/github.com/EstebanBorai/gosk
+WORKDIR /go/src/github.com/EstebanBorai/hkroom
 
 COPY . .
 
