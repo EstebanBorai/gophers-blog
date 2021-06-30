@@ -1,4 +1,4 @@
-module github.com/EstebanBorai/hkroom
+module github.com/EstebanBorai/gophers-blog
 
 go 1.16
 

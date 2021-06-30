@@ -1,6 +1,6 @@
 package main
 
-import "github.com/EstebanBorai/hkroom/pkg"
+import "github.com/EstebanBorai/gophers-blog/pkg"
 
 func main() {
 	repository := pkg.NewRepository()

@@ -75,7 +75,7 @@ func (r *Repository) UpdatePost(id int, dto *PostDTO) (*Post, error) {
 		return nil, err
 	} else {
 		// TODO: Create a function to validation Post fields
-		if tmp, err := NewPost(id, post.Title, post.Body); err != nil {
+		if tmp, err := NewPost(id, dto.Title, dto.Body); err != nil {
 			return nil, err
 		} else {
 			tmp.ID = id

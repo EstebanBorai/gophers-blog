@@ -4,9 +4,8 @@ services:
   api:
     build:
       context: .
-    environment:
-      - GO111MODULE=off
+
     ports:
-      - 4200:4200
+      - 8080:8080
     volumes:
-      - ./:/go/src/github.com/EstebanBorai/hkroom
+      - ./:/go/src/github.com/EstebanBorai/gophers-blog

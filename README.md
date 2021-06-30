@@ -1,7 +1,7 @@
 <div>
-  <h1 align="center">go-post-api</h1>
+  <h1 align="center">gophers-blog</h1>
   <h4 align="center">
-    A minimalist REST API with CRUD capabilities for _Blog Posts_ to learn Go
+    A minimalist REST API with CRUD capabilities for Blog Posts domain to learn Go
   </h4>
 </div>
 
@@ -16,7 +16,7 @@ There's 2 rules for the Post entity:
 1. Every post title must have at least 5 characters
 2. Every post body must have at least 10 characters
 
-The previous version of this project: [v0.1.0](https://github.com/EstebanBorai/hkroom/releases/tag/v0.1.0).
+The previous version of this project: [v0.1.0](https://github.com/EstebanBorai/gophers-blog/releases/tag/v0.1.0).
 
 Was one of the first Golang projects I've ever made, I decided to
 update the project to follow better practices and to keep the
